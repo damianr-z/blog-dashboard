@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,600;1,600&family=Fira+Sans:wght@500;600&family=Oxygen:wght@300&family=Poppins:ital,wght@0,300;0,400;1,300;1,400&family=Ubuntu:wght@400;500&display=swap');
+
+:root {
+  /* FONT SIZES */
+  --fs-10: 0.625rem;
+  --fs-12: 0.75rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1rem;
+  --fs-18: 1.125rem;
+  --fs-20: 1.25rem;
+  --fs-24: 1.5rem;
+  --fs-30: 1.875rem;
+  --fs-32: 2rem;
+  --fs-48: 3rem;
+  --fs-64: 4rem;
+
+  /* FONT FAMILIES */
+  --ff-nav: 'Ubuntu', 'Helvetica', sans-serif;
+  --ff-heading: 'Crimson Text', 'Georgia', 'Cambria', serif;
+  --ff-subheading: 'Fira Sans', 'Droid Sans', 'Century Gothic', sans-serif;
+  --ff-text: 'Poppins', 'Roboto', 'Arial Narrow', sans-serif;
+  --ff-btn: 'Ubuntu', 'Helvetica Neue', sans-serif;
+  --ff-link: 'Oxygen', 'Arial', sans-serif;
+
+  /* BOX SHADOW */
+  --box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
+    0 1px 1px rgba(128, 128, 128, 0.155),
+    0 2.1px 2.1px rgba(128, 128, 128, 0.195),
+    0 4.4px 4.4px rgba(128, 128, 128, 0.241),
+    0 12px 12px rgba(128, 128, 128, 0.35);
+
+  /* ANIMATION */
+  --timing: 400ms;
+  --ease: cubic-bezier(0.865, 0.14, 0.095, 0.87);
+
+  /* COLOUR PALETTE */
+  --c-background: linear-gradient(
+    47deg,
+    rgb(0, 26, 255),
+    rgb(113, 196, 255) 100%
+  );
+  --image-gradient: linear-gradient(
+    217deg,
+    rgba(2, 2, 2, 0.5),
+    rgba(0, 0, 255, 0.7)
+  );
+
+  &,
+  &.light-mode {
+    /* BRAND COLOURS */
+    --c-blue-50: #cbd9fe;
+    --c-blue-100: #b3d6ff;
+    --c-blue-200: #7bb2fa;
+    --c-blue-500: #4db8ff;
+    --c-blue-400: #49a4ff;
+    --c-blue-600: #3399ff;
+    --c-blue-700: #007acc;
+    --c-blue-800: #191970;
+    --c-blue-900: #000467;
+
+    /* WHITE TO BLACK */
+    --c-white-0: #fff;
+    --c-white-50: #fafafa;
+    --c-white-100: #f5f5f5;
+    --c-white-200: #eeeeee;
+    --c-white-300: #f0f0f0;
+    --c-white-400: #e6e6e6;
+    --c-white-500: #dcdcdc;
+    --c-white-600: #d2d2d2;
+    --c-white-700: #c8c8c8;
+    --c-white-800: #bebebe;
+    --c-white-900: #b4b4b4;
+
+    --c-grey-100: #8a97ae;
+    --c-grey-100: #7d8696;
+    --c-grey-200: #555f74;
+    --c-grey-300: #2e3a52;
+    --c-grey-400: #232b3e;
+    --c-grey-500: #1a2130;
+    --c-grey-600: #121824;
+    --c-grey-700: #0b0f18;
+    --c-grey-800: #080c12;
+    --c-grey-900: #05080c;
+
+    --c-black-100: #1a1a1a;
+    --c-black-200: #141414;
+    --c-black-300: #0e0e0e;
+    --c-black-400: #0a0a0a;
+    --c-black-500: #050505;
+    --c-black-600: #030303;
+    --c-black-700: #020202;
+    --c-black-800: #010101;
+    --c-black-900: #000000;
+
+    --c-green-50: #ecfdf5;
+    --c-green-100: #dcfce7;
+    --c-green-200: #bbf7d0;
+    --c-green-300: #86efac;
+    --c-green-400: #4ade80;
+    --c-green-500: #1db954; /* replaced */
+    --c-green-600: #16a34a;
+    --c-green-700: #15803d;
+    --c-green-800: #166534;
+    --c-green-900: #064e3b;
+
+    --c-yellow-50: #fffbeb;
+    --c-yellow-100: #fef3c7;
+    --c-yellow-200: #fde68a;
+    --c-yellow-300: #fcd34d;
+    --c-yellow-400: #fbbf24;
+    --c-yellow-500: #f59e0b;
+    --c-yellow-600: #d97706;
+    --c-yellow-700: #b45309;
+    --c-yellow-800: #92400e;
+    --c-yellow-900: #78350f;
+
+    --c-red-50: #fef2f2;
+    --c-red-100: #fee2e2;
+    --c-red-200: #fecaca;
+    --c-red-300: #fca5a5;
+    --c-red-400: #f87171;
+    --c-red-500: #ef4444;
+    --c-red-600: #dc2626;
+    --c-red-700: #cf1020; /* replaced */
+    --c-red-800: #991b1b;
+    --c-red-900: #7f1d1d;
+
+    --backdrop-color: rgba(255, 255, 255, 0.1);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
+
+    --border-radius-tiny: 3px;
+    --border-radius-sm: 5px;
+    --border-radius-md: 7px;
+    --border-radius-lg: 9px;
+  }
+
+  /* &.dark-mode {
+    --image-grayscale: 0;
+    --image-opacity: 100%;
+    filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
+
+    --c-grey-0: #18212f;
+    --c-grey-50: #111827;
+    --c-grey-100: #1f2937;
+    --c-grey-200: #374151;
+    --c-grey-300: #4b5563;
+    --c-grey-400: #6b7280;
+    --c-grey-500: #9ca3af;
+    --c-grey-600: #d1d5db;
+    --c-grey-700: #e5e7eb;
+    --c-grey-800: #f3f4f6;
+    --c-grey-900: #f9fafb;
+
+    --c-blue-100: #075985;
+    --c-blue-700: #e0f2fe;
+    --c-green-100: #166534;
+    --c-green-700: #dcfce7;
+    --c-yellow-100: #854d0e;
+    --c-yellow-700: #fef9c3;
+    --c-silver-100: #374151;
+    --c-silver-700: #f3f4f6;
+    --c-indigo-100: #3730a3;
+    --c-indigo-700: #e0e7ff;
+
+    --c-red-100: #fee2e2;
+    --c-red-700: #b91c1c;
+    --c-red-800: #991b1b;
+
+    --backdrop-color: rgba(0, 0, 0, 0.3);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.4);
+
+    --image-grayscale: 10%;
+    --image-opacity: 90%;
+  } */
+}
+
+/* Make images easier to work with */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+@media (max-width: 25em) {
+  /*///////// MINIMUM FONT SIZES ////////////*/
+  :root {
+    --fs-10: calc(var(--fs-10) * 1.06);
+    --fs-12: calc(var(--fs-12) * 1.06);
+    --fs-14: calc(var(--fs-14) * 1.09);
+    --fs-16: calc(var(--fs-16) * 1.1);
+    --fs-18: calc(var(--fs-18) * 1.11);
+    --fs-20: calc(var(--fs-20) * 1.13);
+    --fs-24: calc(var(--fs-24) * 1.14);
+    --fs-30: calc(var(--fs-30) * 1.16);
+    --fs-32: calc(var(--fs-32) * 1.18);
+    --fs-48: calc(var(--fs-48) * 1.2);
+    --fs-64: calc(var(--fs-64) * 1.3);
+  }
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  transition: background-color 0.3s, border 0.3s;
+}
+
+*:disabled {
+  cursor: not-allowed;
+}
+
+html,
+html:focus-within {
+  scroll-behavior: smooth;
+  max-width: 100%;
+  font-size: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--ff-text);
+  color: var(--c-grey-600);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: 1.3px;
+  hyphens: auto;
+}
+
+h1 {
+  font: 600 var(--fs-64) / 1.3em var(--ff-heading);
+}
+
+h2 {
+  font: 500 var(--fs-48) / 1.2em var(--ff-subheading);
+}
+
+h3 {
+  font: 500 var(--fs-32) / 1.15em var(--ff-subheading);
+}
+
+h4 {
+  font: 500 var(--fs-20) / 1.1em var(--ff-subheading);
+}
+
+p,
+span {
+  font: 400 var(--fs-16) / 1.5em var(--ff-text);
+}
+
+a {
+  font: 500 var(--fs-18) / 1.5em var(--ff-link);
+  color: inherit;
+  text-decoration: none;
+}
+
+/* A elements that don't have a class get defaults underline*/
+a:not([class]) {
+  text-underline-offset: 3px;
+  text-decoration-skip-ink: auto;
+}
+
+/* Inherit fonts for form elements */
+input,
+textarea,
+select {
+  font: var(--ff-body);
+}
+
+input:focus,
+button:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--color-blue-600);
+  outline-offset: -1px;
+}
+
+button {
+  font-size: calc(10px + 2vmin);
+}
+
+ul {
+  list-style: none;
+}
