@@ -3,9 +3,6 @@ import styled from 'styled-components';
 import Spinner from '../../ui/Spinner';
 import BlogRow from './BlogRow';
 import { useBlogs } from './useBlogs';
-// import Table from '../../ui/Table';
-// import Empty from '../../ui/Empty';
-// import { useSearchParams } from 'react-router-dom';
 
 const Table = styled.div`
   border: 1px solid var(--c-grey-200);

@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
+
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { createEditBlog } from '../../services/apiBlogs';
-
 import toast from 'react-hot-toast';
+
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
 import Button from '../../ui/Button';
@@ -10,25 +11,15 @@ import FileInput from '../../ui/FileInput';
 import TextArea from '../../ui/TextArea';
 import FormRow from '../../ui/FormRow';
 
-import { useCreateBlog } from './useBlogs';
-// import { useUpdateBlog } from './useUpdateBlog';
+import { useCreateBlog } from './useCreateBlog';
+import { useEditBlog } from './useEditBlog';
 
 function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
+  const { isCreating, createBlog } = useCreateBlog();
+  const { isEditing, editBlog } = useEditBlog();
+  const isWorking = isCreating || isEditing;
+
   const queryClient = useQueryClient();
-
-  const { mutate, isLoading: isCreating } = useMutation({
-    mutationFn: createEditBlog,
-    onSuccess: () => {
-      toast.success('New blog successfully created');
-      queryClient.invalidateQueries({ queryKey: ['blogs'] });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
-  //   const { isCreating, createBlog } = useCreateBlog();
-  //   const { isUpdating, updateBlog } = useUpdateBlog();
-  //   const isWorking = isCreating;
 
   const { id: editId, ...editValues } = blogToEdit;
   const isEditSession = Boolean(editId);
@@ -39,29 +30,28 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
   const { errors } = formState;
 
   function onSubmit(data) {
-    mutate({ ...data, image: data.image[0] });
+    const image = typeof data.image === 'string' ? data.image : data.image[0];
 
-    // if (isUpdateSession)
-    //   updateBlog(
-    //     { newBlogData: { ...data, image }, id: updateId },
-    //     {
-    //       onSuccess: (data) => {
-    //         console.log('Blog updated', data);
-    //         reset();
-    //         onCloseModal?.();
-    //       },
-    //     }
-    //   );
-    // else
-    //   createBlog(
-    //     { ...data, image: image },
-    //     {
-    //       onSuccess: (data) => {
-    //         reset();
-    //         onCloseModal?.();
-    //       },
-    //     }
-    //   );
+    if (isEditSession)
+      editBlog(
+        { newBlogData: { ...data, image }, id: editId },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    else
+      createBlog(
+        { ...data, image: image },
+        {
+          onSuccess: (data) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
   }
 
   function onError(errors) {
@@ -75,7 +65,7 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
           type="text"
           id="title"
           placeholder="Title"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('title', {
             required: 'This field is required',
             minLength: {
@@ -91,7 +81,7 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
           id="body"
           placeholder="write..."
           defaultValue=""
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('body', {
             required: 'This field is required',
             minLength: {
@@ -107,7 +97,7 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
           type="text"
           id="categories"
           placeholder="categories"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('categories', {
             required: 'This field is required',
             minLength: {
@@ -136,7 +126,7 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
         >
           Cancel
         </Button>
-        <Button disabled={isCreating} type="submit">
+        <Button disabled={isWorking} type="submit">
           {isEditSession ? 'Edit blog' : 'Create new blog'}
         </Button>
       </FormRow>

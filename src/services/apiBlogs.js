@@ -12,7 +12,7 @@ export async function getBlogs() {
 }
 
 export async function createEditBlog(newBlog, id) {
-  const hasImagePath = newBlog.image?.includes('http');
+  const hasImagePath = typeof newBlog.image === 'string' && newBlog.image.startsWith('http');
   const imageName = `${Math.random()}-${newBlog.image.name}`.replaceAll(
     '/',
     ''

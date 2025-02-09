@@ -2,8 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import CreateBlogForm from './CreateBlogForm';
 
-// import { useCreateBlog } from './useBlogs';
-import { useCreateBlog, useDeleteBlog } from './useBlogs';
+import { useCreateBlog } from './useCreateBlog';
+import { useDeleteBlog } from './useDeleteBlog';
 import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
 
 const TableRow = styled.div`
@@ -38,19 +38,19 @@ const Blog = styled.div`
 function BlogRow({ blog }) {
   const [showForm, setShowForm] = useState(false);
   const { isDeleting, deleteBlog } = useDeleteBlog();
-  // const { isCreating, createBlog } = useCreateBlog();
+  const { isCreating, createBlog } = useCreateBlog();
 
   const { image, id: blogId, title, authorId, categories } = blog;
 
-    function handleDuplicate() {
-      // createBlog({
-      //   title: `Copy of ${title}`,
-      //   body,
-      //   categories,
-      //   author,
-      //   image
-      // });
-    }
+  function handleDuplicate() {
+    // createBlog({
+    //   title: `Copy of ${title}`,
+    //   body,
+    //   categories,
+    //   author,
+    //   image
+    // });
+  }
 
   return (
     <>
@@ -62,9 +62,9 @@ function BlogRow({ blog }) {
         <div>{categories}</div>
 
         <div>
-          {/* <button disabled={isCreating} onClick={handleDuplicate}>
+          <button onClick={handleDuplicate}>
             <HiSquare2Stack />
-          </button> */}
+          </button>
           <button onClick={() => setShowForm((show) => !show)}>
             <HiPencil />
           </button>
