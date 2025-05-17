@@ -21,7 +21,7 @@ const StyledToggle = styled.button`
     cursor: pointer;
 
     &:hover {
-        background-color: var(--c-grey-300);
+        background-color: var(--c-blue-800);
     }
     & svg {
         width: 2.4rem;
@@ -32,7 +32,7 @@ const StyledToggle = styled.button`
 
 const StyledList = styled.ul`
   position: fixed;
-  background-color: var(--c-grey-100);
+  background-color: var(--c-grey-200);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-sm);
   right: ${(props) => props.position.x}px;
@@ -47,20 +47,20 @@ const StyledButton = styled.button`
   padding: 1.2rem 2.4rem;
   font-size: var(--fs-16);
   transtion: all 0.2s;
-  color: var(--c-white-200);
+  color: var(--c-white-400);
   display: flex;
   align-items: center;
   gap: 1.6rem;
   cursor: pointer;
 
   &:hover {
-    background-color: var(--c-grey-500);
+    background-color: var(--c-blue-800);
+    color: var(--c-blue-200);
   }
 
   & svg {
     width: 1.6rem;
     height: 1.6rem;
-    color: var(--c-white-200);
     transition: all 0.3;
   }
 `;
@@ -88,7 +88,7 @@ function Toggle({ id }) {
   function handleClick(e) {
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition({
-      x: window.innerWidth - rect.width - (rect.x + 210),
+      x: window.innerWidth - rect.width - (rect.x + 215),
       y: rect.y + rect.height - 60,
     });
 

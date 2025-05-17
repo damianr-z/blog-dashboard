@@ -9,11 +9,11 @@ import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
 import Modal from '../../ui/Modal';
 
-console.log('table:', Table.Row);
+
 
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  grid-template-columns: fit-content 1.8fr 2.2fr 1fr 1fr 0.5fr;
   font: var(--fs-18) var(--ff-text);
   column-gap: 2.4rem;
   align-items: center;
@@ -26,6 +26,7 @@ const TableRow = styled.div`
 
 const Img = styled.img`
   display: block;
+  margin: 0 1rem;
   width: 6.4rem;
   aspect-ratio: 3 / 2;
   object-fit: cover;
@@ -88,7 +89,7 @@ function BlogRow({ blog }) {
               </Modal.Open>
             </Menus.List>
 
-            <Modal.Window name="edit">
+            <Modal.Window name="edit" type="large">
               <CreateBlogForm blogToEdit={blog} />
             </Modal.Window>
 
@@ -101,7 +102,6 @@ function BlogRow({ blog }) {
             </Modal.Window>
           </Menus.Menu>
         </Modal>
-        {/* {showForm && <CreateBlogForm blogToEdit={blog} />} */}
       </div>
     </Table.Row>
   );

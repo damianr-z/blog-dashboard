@@ -11,11 +11,14 @@ const StyledModal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--c-grey-100);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
   color: var(--c-white-100);
+  width: ${(props) => (props.type === 'large' ? '100%' : 'auto')};
+  height: ${(props) => (props.type === 'large' ? '100%' : 'auto')};
+  overflow: auto;
 `;
 
 const Overlay = styled.div`
@@ -24,16 +27,16 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: var(--c-white-900);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
+  background-color: var(--c-white-100);
+  opacity: 0.95;
+  backdrop-filter: blur(6px);
+  z-index: 1;
   transition: all 0.5s;
   cursor: pointer;
 `;
 
 const Button = styled.button`
   background: none;
-  border: none;
   padding: 0.4rem;
   border-radius: var(--border-radius-sm);
   transform: translateX(0.8rem);
@@ -44,10 +47,12 @@ const Button = styled.button`
   color: var(--c-white-100);
 
   &:hover {
-    background-color: var(--c-white-100);
+    background-color: var(--c-blue-800);
   }
 
   & svg {
+    display: flex;
+    justify-content: center;
     width: 2.4rem;
     height: 2.4rem;
     /* Sometimes we need both */
@@ -78,7 +83,7 @@ function Open({ children, opens: opensWindowName }) {
   return cloneElement(children, { onClick: () => open(opensWindowName) });
 }
 
-function Window({ children, name }) {
+function Window({ children, name, type }) {
   const { openName, close } = useContext(ModalContext);
   const ref = useOutsideClick(close);
 
@@ -86,7 +91,7 @@ function Window({ children, name }) {
 
   return createPortal(
     <Overlay>
-      <StyledModal ref={ref}>
+      <StyledModal ref={ref} type={type}>
         <Button onClick={close}>
           <HiXMark />
         </Button>

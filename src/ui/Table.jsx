@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
-import styled from "styled-components";
+import { createContext, useContext } from 'react';
+import styled from 'styled-components';
 
 const StyledTable = styled.div`
   border: 1px solid var(--c-grey-200);
@@ -16,21 +16,25 @@ const CommonRow = styled.div`
   align-items: center;
   transition: none;
   margin-block: 0.8rem;
+  color: var(--c-white-200);
+  padding: 1.4rem 2.4rem;
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--c-white-400);
+  }
 `;
 
 const StyledHeader = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
   background-color: var(--c-grey-100);
-  border-bottom: 1px solid var(--c-white-100);
+  border-bottom: 1px solid var(--c-white-700);
   text-transform: uppercase;
-  letter-spacing: 0.4px;
-  font-weight: 600;
-  color: var(--c-white-100);
+  letter-spacing: 0.5px;
+  font: var(--fs-24) var(--ff-subheading);
 `;
 
 const StyledRow = styled(CommonRow)`
   padding: 1.2rem 2.4rem;
-
+  font: var(--fs-20) var(--ff-text);
   &:not(:last-child) {
     border-bottom: 1px solid var(--c-grey-100);
   }
@@ -40,17 +44,17 @@ const StyledBody = styled.section`
   margin: 0.4rem 0;
 `;
 
-const Footer = styled.footer`
-  background-color: var(--color-grey-50);
-  display: flex;
-  justify-content: center;
-  padding: 1.2rem;
+// const Footer = styled.footer`
+//   background-color: var(--color-grey-50);
+//   display: flex;
+//   justify-content: center;
+//   padding: 1.2rem;
 
-  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
-  &:not(:has(*)) {
-    display: none;
-  }
-`;
+//   /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
+//   &:not(:has(*)) {
+//     display: none;
+//   }
+// `;
 
 const Empty = styled.p`
   font-size: 1.6rem;
@@ -92,11 +96,9 @@ function Body({ data, render }) {
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
-
-
 Table.Header = Header;
 Table.Body = Body;
 Table.Row = Row;
-Table.Footer = Footer;
+// Table.Footer = Footer;
 
 export default Table;
