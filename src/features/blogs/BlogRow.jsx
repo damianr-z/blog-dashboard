@@ -9,11 +9,9 @@ import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
 import Modal from '../../ui/Modal';
 
-
-
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: fit-content 1.8fr 2.2fr 1fr 1fr 0.5fr;
+  grid-template-columns: fit-content 2.8fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
   font: var(--fs-18) var(--ff-text);
   column-gap: 2.4rem;
   align-items: center;
@@ -45,30 +43,41 @@ function BlogRow({ blog }) {
   const { isDeleting, deleteBlog } = useDeleteBlog();
   const { isCreating, createBlog } = useCreateBlog();
 
-  const { image, id: blogId, title, author: authorId, body, categories } = blog;
+  const {
+    image,
+    id: blogId,
+    title,
+    author,
+    created_at,
+    categories,
+    status,
+  } = blog;
+  const authorName = author?.name || 'Unknown';
 
   function handleDuplicate() {
     createBlog({
       image,
       title: `Copy of ${title}`,
-      body,
+      created_at,
       categories,
-      authorId: authorId,
+      author: author,
     });
   }
-  function featuredContent() {
-    if (body.length < 100) return body;
-    let truncated = body.slice(0, 90);
-    return truncated.slice(0, truncated.lastIndexOf(' ')) + '...';
-  }
+
+  // function featuredContent() {
+  //   if (body.length < 100) return body;
+  //   let truncated = body.slice(0, 90);
+  //   return truncated.slice(0, truncated.lastIndexOf(' ')) + '...';
+  // }
 
   return (
     <Table.Row>
       <Img src={image} />
       <div>{title}</div>
-      <div>{featuredContent()}</div>
-      <div>{authorId}</div>
+      <div>{authorName}</div>
       <div>{categories}</div>
+      <div>{status}</div>
+      <div>{created_at}</div>
 
       <div>
         <Modal>

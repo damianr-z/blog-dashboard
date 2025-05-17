@@ -1,7 +1,9 @@
 import supabase, { supabaseUrl } from './supabase';
 
 export async function getBlogs() {
-  const { data, error } = await supabase.from('blogs').select('*');
+  const { data, error } = await supabase
+    .from('blogs')
+    .select('*, author(name)');
 
   if (error) {
     console.log(error);
@@ -38,7 +40,7 @@ export async function createEditBlog(newBlog, id) {
     console.log(error);
     throw new Error('blog could not be created');
   }
-  
+
   // if the image is already a url, return the data
   if (hasImagePath) return data;
 
