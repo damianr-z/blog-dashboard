@@ -12,7 +12,8 @@ export async function getBlogs() {
 }
 
 export async function createEditBlog(newBlog, id) {
-  const hasImagePath = typeof newBlog.image === 'string' && newBlog.image.startsWith('http');
+  const hasImagePath =
+    typeof newBlog.image === 'string' && newBlog.image.startsWith('http');
   const imageName = `${Math.random()}-${newBlog.image.name}`.replaceAll(
     '/',
     ''
@@ -33,14 +34,17 @@ export async function createEditBlog(newBlog, id) {
 
   const { data, error } = await query.select().single();
 
-  const { error: storageError } = await supabase.storage
-    .from('posts-images')
-    .upload(imageName, newBlog.image);
-
   if (error) {
     console.log(error);
     throw new Error('blog could not be created');
   }
+  
+  // if the image is already a url, return the data
+  if (hasImagePath) return data;
+
+  const { error: storageError } = await supabase.storage
+    .from('posts-images')
+    .upload(imageName, newBlog.image);
 
   if (storageError) {
     await supabase.from('blogs').delete().eq('id', data.id);

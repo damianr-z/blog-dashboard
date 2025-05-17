@@ -8,10 +8,19 @@ const StyledHeader = styled.header`
   border-bottom: 1px solid var(--c-grey-500);
 `;
 
+const StyledLogo = styled.h1`
+  font-size: var(--fs-32);
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  color: var(--c-blue-100);
+  line-height: 1.4;
+`;
+
 function Header() {
   return (
     <StyledHeader>
-      <Logo type={'small'} />
+      {/* <Logo type={'small'} /> */}
+      <StyledLogo>Damian Roiz</StyledLogo>
     </StyledHeader>
   );
 }

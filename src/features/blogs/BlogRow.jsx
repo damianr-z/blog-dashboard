@@ -1,10 +1,15 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import CreateBlogForm from './CreateBlogForm';
 
 import { useCreateBlog } from './useCreateBlog';
 import { useDeleteBlog } from './useDeleteBlog';
 import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
+import ConfirmDelete from '../../ui/ConfirmDelete';
+import Menus from '../../ui/Menus';
+import Table from '../../ui/Table';
+import Modal from '../../ui/Modal';
+
+console.log('table:', Table.Row);
 
 const TableRow = styled.div`
   display: grid;
@@ -36,45 +41,69 @@ const Blog = styled.div`
 `;
 
 function BlogRow({ blog }) {
-  const [showForm, setShowForm] = useState(false);
   const { isDeleting, deleteBlog } = useDeleteBlog();
   const { isCreating, createBlog } = useCreateBlog();
 
-  const { image, id: blogId, title, authorId, categories } = blog;
+  const { image, id: blogId, title, author: authorId, body, categories } = blog;
 
   function handleDuplicate() {
-    // createBlog({
-    //   title: `Copy of ${title}`,
-    //   body,
-    //   categories,
-    //   author,
-    //   image
-    // });
+    createBlog({
+      image,
+      title: `Copy of ${title}`,
+      body,
+      categories,
+      authorId: authorId,
+    });
+  }
+  function featuredContent() {
+    if (body.length < 100) return body;
+    let truncated = body.slice(0, 90);
+    return truncated.slice(0, truncated.lastIndexOf(' ')) + '...';
   }
 
   return (
-    <>
-      <TableRow role="row">
-        <Img src={image} />
-        <Blog>{blogId}</Blog>
-        <div>{title}</div>
-        <div>{authorId}</div>
-        <div>{categories}</div>
+    <Table.Row>
+      <Img src={image} />
+      <div>{title}</div>
+      <div>{featuredContent()}</div>
+      <div>{authorId}</div>
+      <div>{categories}</div>
 
-        <div>
-          <button onClick={handleDuplicate}>
-            <HiSquare2Stack />
-          </button>
-          <button onClick={() => setShowForm((show) => !show)}>
-            <HiPencil />
-          </button>
-          <button onClick={() => deleteBlog(blogId)} disabled={isDeleting}>
-            <HiTrash />
-          </button>
-        </div>
-      </TableRow>
-      {showForm && <CreateBlogForm blogToEdit={blog} />}
-    </>
+      <div>
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={blogId} />
+
+            <Menus.List id={blogId}>
+              <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
+                Duplicate
+              </Menus.Button>
+
+              <Modal.Open opens="edit">
+                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+              </Modal.Open>
+
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+
+            <Modal.Window name="edit">
+              <CreateBlogForm blogToEdit={blog} />
+            </Modal.Window>
+
+            <Modal.Window name="delete">
+              <ConfirmDelete
+                resourceName="blogs"
+                disabled={isDeleting}
+                onConfirm={() => deleteBlog(blogId)}
+              />
+            </Modal.Window>
+          </Menus.Menu>
+        </Modal>
+        {/* {showForm && <CreateBlogForm blogToEdit={blog} />} */}
+      </div>
+    </Table.Row>
   );
 }
 
