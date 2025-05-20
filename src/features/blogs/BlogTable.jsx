@@ -19,7 +19,7 @@ function BlogTable() {
 
   return (
     <Menus>
-      <Table columns="0.8fr 2.5fr 1fr 1fr 1fr 1fr 1fr">
+      <Table columns="1.2fr 2.5fr 1fr 1fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
           <div>Title</div>

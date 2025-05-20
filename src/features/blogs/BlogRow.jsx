@@ -10,18 +10,6 @@ import Table from '../../ui/Table';
 import Modal from '../../ui/Modal';
 import Tag from '../../ui/ColorTag';
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: fit-content 2.8fr 0.5fr 1fr 1fr 0.5fr 0.5fr;
-  font: var(--fs-18) var(--ff-text);
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--c-white-400);
-  }
-`;
 
 const Img = styled.img`
   display: block;
@@ -31,13 +19,6 @@ const Img = styled.img`
   object-fit: cover;
   object-position: center;
   transform: scale(1.5) translateX(-7px);
-`;
-
-const Blog = styled.div`
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--c-grey-600);
-  font-family: 'Sono';
 `;
 
 function BlogRow({ blog }) {

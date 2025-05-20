@@ -11,6 +11,7 @@ const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   background-color: var(--c-grey-300);
+  border-radius: var(--border-radius-lg);
 `;
 
 const StyledNavLink = styled(NavLink)`
