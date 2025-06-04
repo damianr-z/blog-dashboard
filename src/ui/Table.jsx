@@ -34,7 +34,7 @@ const StyledRow = styled(CommonRow)`
   padding: 1.8rem 2.4rem;
   font: var(--fs-20) var(--ff-text);
   &:not(:last-child) {
-    border-bottom: 1px solid var(--c-grey-200);
+    border-bottom: 1px solid var(--c-grey-100);
   }
 `;
 

@@ -47,7 +47,7 @@ const Button = styled.button`
   color: var(--c-white-100);
 
   &:hover {
-    background-color: var(--c-blue-800);
+    background-color: var(--c-blue-200);
   }
 
   & svg {

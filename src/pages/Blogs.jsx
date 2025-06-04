@@ -3,6 +3,7 @@ import Heading from '../ui/Heading';
 import { useEffect } from 'react';
 import { getBlogs } from '../services/apiBlogs';
 import BlogTable from '../features/blogs/BlogTable';
+import BlogTableOps from '../features/blogs/BlogTableOps';
 
 function Blogs() {
   useEffect(() => {
@@ -13,7 +14,7 @@ function Blogs() {
     <>
       <Row type="horizontal">
         <Heading as="h1">All blogs</Heading>
-        <p>Filter / Sort</p>
+        <BlogTableOps />
       </Row>
       <Row>
         <BlogTable />

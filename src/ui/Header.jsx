@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Logo from './Logo';
+// import Logo from './Logo';
 
 const StyledHeader = styled.header`
   background-color: var(--c-black-100);
@@ -20,7 +20,7 @@ function Header() {
   return (
     <StyledHeader>
       {/* <Logo type={'small'} /> */}
-      <StyledLogo>Damian Roiz</StyledLogo>
+      <StyledLogo>Blog Dashboard</StyledLogo>
     </StyledHeader>
   );
 }

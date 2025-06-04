@@ -21,18 +21,18 @@ const StyledToggle = styled.button`
     cursor: pointer;
 
     &:hover {
-        background-color: var(--c-blue-800);
+        background-color: var(--c-blue-600);
     }
     & svg {
         width: 2.4rem;
         height: 2.4rem;
-        color: var(--c-white-200);
+        color: var(--c-blue-50);
     }
 `;
 
 const StyledList = styled.ul`
   position: fixed;
-  background-color: var(--c-grey-200);
+  background-color: var(--c-grey-100);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-sm);
   right: ${(props) => props.position.x}px;
@@ -54,8 +54,8 @@ const StyledButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: var(--c-blue-800);
-    color: var(--c-blue-200);
+    background-color: var(--c-blue-600);
+    color: var(--c-blue-50);
   }
 
   & svg {

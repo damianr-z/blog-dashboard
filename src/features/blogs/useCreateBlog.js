@@ -13,7 +13,7 @@ export function useCreateBlog() {
   const { mutate: createBlog, isLoading: isCreating } = useMutation({
     mutationFn: createEditBlog,
     onSuccess: () => {
-      toast.success("New cabin successfully created");
+      toast.success("New blog successfully created");
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
     },
     onError: (err) => toast.error(err.message),

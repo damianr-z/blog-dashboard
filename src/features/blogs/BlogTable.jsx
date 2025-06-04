@@ -3,19 +3,31 @@ import BlogRow from './BlogRow';
 import { useBlogs } from './useBlogs';
 import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
-
-// const Table = styled.div`
-//   border: 1px solid var(--c-grey-200);
-//   font-size: 1.4rem;
-//   background-color: var(--c-white-50);
-//   border-radius: 7px;
-//   overflow: hidden;
-// `;
+// import Empty from '../../ui/Empty';
+import { useSearchParams } from 'react-router-dom';
 
 function BlogTable() {
   const { isLoading, blogs } = useBlogs();
+  const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
+  // if (!blogs || blogs.length === 0) return <Empty resourcename="blogs" />;
+
+  // 1) Filter
+  const filterValue = searchParams.get('status') || 'all';
+
+  const filteredBlogs =
+    filterValue === 'all'
+      ? blogs
+      : blogs.filter((blog) => blog.status === filterValue);
+
+  // 2) Sort
+  const sortBy = searchParams.get('sortBy') || 'created_at-newest';
+  const [field, direction] = sortBy.split('-');
+  const modifier = direction === 'oldest' ? 1 : -1;
+  const sortedBlogs = filteredBlogs
+    .slice()
+    .sort((a, b) => (new Date(a[field]) - new Date(b[field])) * modifier);
 
   return (
     <Menus>
@@ -29,7 +41,7 @@ function BlogTable() {
           <div>Date</div>
         </Table.Header>
         <Table.Body
-          data={blogs}
+          data={sortedBlogs}
           render={(blog) => <BlogRow key={blog.id} blog={blog} />}
         />
       </Table>

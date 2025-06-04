@@ -31,7 +31,7 @@ const variations = {
   secondary: css`
     color: var(--c-white-100);
     background: var(--c-grey-100);
-    border: 1px solid var(--c-white-500);
+    border: 1px solid var(--c-grey-500);
 
     &:hover {
       background-color: var(--c-white-400);

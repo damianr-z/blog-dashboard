@@ -23,7 +23,7 @@ const StyledNavLink = styled(NavLink)`
     padding: 1.2rem;
     margin: 1rem;
     gap: 1rem;
-    color: var(--c-white-600);
+    color: var(--c-white-200);
     font-size: 1.6rem;
     font-weight: 500;
     padding: 1rem 1rem;
@@ -39,15 +39,15 @@ const StyledNavLink = styled(NavLink)`
   &:active,
   &.active:link,
   &.active:visited {
-    color: var(--c-blue-600);
-    background-color: var(--c-blue-900);
+    color: var(--c-blue-50);
+    background-color: var(--c-blue-600);
     border-radius: var(--border-radius-sm);
   }
 
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    color: var(--c-white-600);
+    color: var(--c-white-200);
     transition: all 0.2s;
   }
 
@@ -55,7 +55,7 @@ const StyledNavLink = styled(NavLink)`
   &:active svg,
   &.active:link svg,
   &.active:visited svg {
-    color: var(--c-blue-700);
+    color: var(--c-blue-50);
   }
 `;
 

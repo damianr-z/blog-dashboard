@@ -3,7 +3,9 @@ import styled from 'styled-components';
 const FileInput = styled.input.attrs({ type: 'file' })`
   font-size: var(--fs-12);
   border-radius: var(--border-radius-sm);
+  color: var(--c-white-200);
   &::file-selector-button {
+    color: var(--c-white-200);
     font: inherit;
     font-weight: 500;
     padding: 0.8rem 1.2rem;
@@ -11,7 +13,6 @@ const FileInput = styled.input.attrs({ type: 'file' })`
     border-radius: var(--border-radius-sm);
     border: none;
     background-color: var(--c-blue-700);
-    color: var(--c-blue-50);
     cursor: pointer;
     transition: color 0.2s, background-color 0.2s;
     &:hover {

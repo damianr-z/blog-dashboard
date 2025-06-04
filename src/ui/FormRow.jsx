@@ -19,9 +19,9 @@ const StyledFormRow = styled.fieldset`
 
 
   &:has(input[type='file']) {
-    border: 1px solid var(--c-white-500);
+    border: 1px solid var(--c-grey-500);
     padding: 1rem;
-    background-color: var(--c-white-400);
+    background-color: var(--c-grey-200);
     width: 100px;
   }
 
