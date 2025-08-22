@@ -38,8 +38,18 @@ const StyledRow = styled(CommonRow)`
   }
 `;
 
-const StyledBody = styled.section`
+const StyledBody = styled.section``;
 
+const Footer = styled.footer`
+  background-color: var(--c-grey-700);
+  display: flex;
+  justify-content: center;
+  padding: 1.2rem;
+
+  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
+  &:not(:has(*)) {
+    display: none;
+  }
 `;
 
 const Empty = styled.p`
@@ -85,5 +95,6 @@ function Body({ data, render }) {
 Table.Header = Header;
 Table.Body = Body;
 Table.Row = Row;
+Table.Footer = Footer;
 
 export default Table;

@@ -3,11 +3,12 @@ import BlogRow from './BlogRow';
 import { useBlogs } from './useBlogs';
 import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
+import Pagination from '../../ui/Pagination';
 // import Empty from '../../ui/Empty';
 import { useSearchParams } from 'react-router-dom';
 
 function BlogTable() {
-  const { isLoading, blogs } = useBlogs();
+  const { isLoading, blogs, count } = useBlogs();
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
@@ -44,6 +45,10 @@ function BlogTable() {
           data={sortedBlogs}
           render={(blog) => <BlogRow key={blog.id} blog={blog} />}
         />
+
+        <Table.Footer>
+          <Pagination count={count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );

@@ -1,16 +1,16 @@
 import supabase, { supabaseUrl } from './supabase';
 
 export async function getBlogs() {
-  const { data, error } = await supabase
+  const { data, error, count } = await supabase
     .from('blogs')
-    .select('*, author(name)');
+    .select('*, author(name)', { count: 'exact' });
 
   if (error) {
     console.log(error);
     throw new Error('blogs could not be loaded');
   }
 
-  return data;
+  return { data, count };
 }
 
 export async function createEditBlog(newBlog, id) {
@@ -65,5 +65,5 @@ export async function deleteBlog(id) {
     throw new Error('blog could not be deleted');
   }
 
-  return data;
+  return { data, count };
 }
