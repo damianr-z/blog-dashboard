@@ -1,9 +1,11 @@
 import supabase, { supabaseUrl } from './supabase';
+import { PAGE_SIZE } from '../utils/constants';
 
 export async function getBlogs() {
   const { data, error, count } = await supabase
     .from('blogs')
     .select('*, author(name)', { count: 'exact' });
+
 
   if (error) {
     console.log(error);
@@ -58,7 +60,7 @@ export async function createEditBlog(newBlog, id) {
 }
 
 export async function deleteBlog(id) {
-  const { data, error } = await supabase.from('blogs').delete().eq('id', id);
+  const { data, error, count } = await supabase.from('blogs').delete().eq('id', id);
 
   if (error) {
     console.log(error);

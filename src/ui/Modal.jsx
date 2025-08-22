@@ -28,7 +28,6 @@ const Overlay = styled.div`
   width: 100%;
   height: 100vh;
   background-color: var(--c-white-100);
-  opacity: 0.95;
   backdrop-filter: blur(6px);
   z-index: 1;
   transition: all 0.5s;
