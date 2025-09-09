@@ -9,7 +9,8 @@ const StyledConfirmDelete = styled.div`
   gap: 1.2rem;
 
   & p {
-    color: var(--c-grey-500);
+    color: var(--c-white-50);
+    font-size: 1.2rem;
     margin-bottom: 1.2rem;
   }
 
@@ -30,11 +31,7 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
       </p>
 
       <div>
-        <Button
-          variation="secondary"
-          disabled={disabled}
-          onClick={onCloseModal}
-        >
+        <Button variation="secondary" disabled={disabled} onClick={onCloseModal}>
           Cancel
         </Button>
         <Button variation="danger" disabled={disabled} onClick={onConfirm}>

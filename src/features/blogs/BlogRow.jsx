@@ -3,13 +3,12 @@ import CreateBlogForm from './CreateBlogForm';
 
 import { useCreateBlog } from './useCreateBlog';
 import { useDeleteBlog } from './useDeleteBlog';
-import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
+import { HiPencil, HiSquare2Stack, HiTrash, HiEye } from 'react-icons/hi2';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
 import Modal from '../../ui/Modal';
 import Tag from '../../ui/ColorTag';
-
 
 const Img = styled.img`
   display: block;
@@ -80,7 +79,7 @@ function BlogRow({ blog }) {
               </Menus.Button>
 
               <Modal.Open opens="edit">
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                <Menus.Button icon={<HiPencil />}>Quick Edit</Menus.Button>
               </Modal.Open>
 
               <Modal.Open opens="delete">
