@@ -1,10 +1,7 @@
-import BlogDetail from '../features/blogs/BlogDetail';
+import BlogView from '../features/blogs/BlogView';
 
 function Blog() {
-  
-  return (
-    <BlogDetail />
-  );
+  return <BlogView />;
 }
 
 export default Blog;

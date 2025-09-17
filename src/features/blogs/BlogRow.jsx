@@ -9,7 +9,7 @@ import ConfirmDelete from '../../ui/ConfirmDelete';
 import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
 import Modal from '../../ui/Modal';
-import Tag from '../../ui/ColorTag';
+import StatusTag from '../../ui/StatusTag';
 
 const Img = styled.img`
   display: block;
@@ -54,21 +54,15 @@ function BlogRow({ blog }) {
   //   return truncated.slice(0, truncated.lastIndexOf(' ')) + '...';
   // }
 
-  const statusToTagName = {
-    draft: 'yellow',
-    published: 'green',
-    archived: 'red',
-  };
-
   return (
     <Table.Row>
       <Img src={image} />
       <div>{title}</div>
       <div>{authorName}</div>
       <div>{categories}</div>
-      <div>
-        <Tag type={statusToTagName[status.toLowerCase()]}>{status}</Tag>
-      </div>
+
+      <StatusTag status={status}>{status}</StatusTag>
+
       <div>{created_at}</div>
 
       <div>

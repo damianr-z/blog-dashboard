@@ -2,19 +2,19 @@ import styled, { css } from 'styled-components';
 
 const sizes = {
   small: css`
-    font-size: var(--fs-12);
+    font-size: var(--fs-16);
     padding: 0.4rem 0.8rem;
     text-transform: uppercase;
     font-weight: 600;
     text-align: center;
   `,
   medium: css`
-    font-size: var(--fs-14);
+    font-size: var(--fs-18);
     padding: 1.2rem 1.6rem;
     font-weight: 500;
   `,
   large: css`
-    font-size: var(--fs-16);
+    font-size: var(--fs-20);
     padding: 1.2rem 2.4rem;
     font-weight: 500;
   `,
@@ -42,6 +42,17 @@ const variations = {
 
     &:hover {
       background-color: var(--c-red-800);
+    }
+  `,
+  naked: css`
+    color: var(--c-white-200);
+    background: none;
+    transition: color 0.3s;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: var(--c-white-500);
     }
   `,
 };
