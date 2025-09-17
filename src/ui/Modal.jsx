@@ -35,8 +35,8 @@ const Overlay = styled.div`
 `;
 
 const Button = styled.button`
-  background: none;
   padding: 0.4rem;
+  border: none;
   border-radius: var(--border-radius-sm);
   transform: translateX(0.8rem);
   transition: all 0.2s;
@@ -44,9 +44,10 @@ const Button = styled.button`
   top: 1.2rem;
   right: 1.9rem;
   color: var(--c-white-100);
+  background-color: var(--c-blue-600);
 
   &:hover {
-    background-color: var(--c-blue-200);
+    background-color: var(--c-blue-700);
   }
 
   & svg {

@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Dashboard from './pages/Dashboard';
 import Blogs from './Pages/Blogs';
+import Blog from './pages/Blog';
 import Users from './Pages/Users';
 import Settings from './Pages/Settings';
 import Account from './Pages/Account';
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="blogs" element={<Blogs />} />
+            <Route path="blogs/:blogId" element={<Blog />} />
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
             <Route path="account" element={<Account />} />

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CreateBlogForm from './CreateBlogForm';
 
+import { useNavigate } from 'react-router-dom';
 import { useCreateBlog } from './useCreateBlog';
 import { useDeleteBlog } from './useDeleteBlog';
 import { HiPencil, HiSquare2Stack, HiTrash, HiEye } from 'react-icons/hi2';
@@ -33,7 +34,9 @@ function BlogRow({ blog }) {
     categories,
     status,
   } = blog;
+
   const authorName = author?.name || 'Unknown';
+  const navigate = useNavigate();
 
   function handleDuplicate() {
     createBlog({
@@ -72,8 +75,17 @@ function BlogRow({ blog }) {
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={blogId} />
-
             <Menus.List id={blogId}>
+              <Menus.Button
+                icon={<HiEye />}
+                onClick={() => {
+                  console.log('viewing blog', blogId);
+                  navigate(`/blogs/${blogId}`);
+                }}
+              >
+                View
+              </Menus.Button>
+
               <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
                 Duplicate
               </Menus.Button>

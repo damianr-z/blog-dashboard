@@ -6,7 +6,6 @@ export async function getBlogs() {
     .from('blogs')
     .select('*, author(name)', { count: 'exact' });
 
-
   if (error) {
     console.log(error);
     throw new Error('blogs could not be loaded');
@@ -59,8 +58,26 @@ export async function createEditBlog(newBlog, id) {
   return data;
 }
 
+export async function getBlog(id) {
+  const { data, error } = await supabase
+    .from('blogs')
+    .select('*, author(name)')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('blog could not be loaded');
+  }
+
+  return data;
+}
+
 export async function deleteBlog(id) {
-  const { data, error, count } = await supabase.from('blogs').delete().eq('id', id);
+  const { data, error, count } = await supabase
+    .from('blogs')
+    .delete()
+    .eq('id', id);
 
   if (error) {
     console.log(error);
