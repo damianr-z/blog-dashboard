@@ -45,10 +45,13 @@ const variations = {
     }
   `,
   naked: css`
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    min-width: max-content;
     color: var(--c-white-200);
     background: none;
     transition: color 0.3s;
-
     &:hover,
     &:focus,
     &:active {

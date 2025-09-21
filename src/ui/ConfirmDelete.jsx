@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import ButtonGroup from './ButtonGroup';
 import Button from './Button';
 import Heading from './Heading';
+import Row from './Row';
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
@@ -25,14 +25,18 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
         action cannot be undone.
       </p>
 
-      <ButtonGroup>
-        <Button variation="secondary" disabled={disabled} onClick={onCloseModal}>
+      <Row type="flexEnd">
+        <Button
+          variation="secondary"
+          disabled={disabled}
+          onClick={onCloseModal}
+        >
           Cancel
         </Button>
         <Button variation="danger" disabled={disabled} onClick={onConfirm}>
           Delete
         </Button>
-      </ButtonGroup>
+      </Row>
     </StyledConfirmDelete>
   );
 }

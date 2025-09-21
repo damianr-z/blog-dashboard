@@ -8,15 +8,24 @@ const Row = styled.div`
     props.type === 'horizontal' &&
     css`
       justify-content: space-between;
-      align-items: center;
     `}
 
   ${(props) =>
     props.type === 'vertical' &&
     css`
       flex-direction: column;
+      justify-content: space-between;
       gap: 1.6rem;
     `}
+  ${(props) => 
+    props.type === "flexEnd" &&
+    css`
+    min-width: max-content;
+    justify-content: flex-end;
+    align-content: flex-end;
+    gap: 1.2rem;
+
+    `}  
 `;
 
 Row.defaultProps = {

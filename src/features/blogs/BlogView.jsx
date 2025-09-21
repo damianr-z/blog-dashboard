@@ -1,11 +1,8 @@
 import styled from 'styled-components';
-
+import BlogContent from './BlogContent';
 import Row from '../../ui/Row';
-import Heading from '../../ui/Heading';
 import StatusTag from '../../ui/StatusTag';
-import ButtonGroup from '../../ui/ButtonGroup';
 import Button from '../../ui/Button';
-import Empty from '../../ui/Empty';
 
 import { useNavigate } from 'react-router-dom';
 import { useMoveBack } from '../../hooks/useMoveBack';
@@ -19,6 +16,7 @@ import Modal from '../../ui/Modal';
 const HeadingSecction = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 2.4rem;
 `;
 
@@ -30,35 +28,25 @@ function BlogView() {
   const moveBack = useMoveBack();
 
   if (isLoading) return <Spinner />;
-  if (!blog) return <Empty resourceName="blog" />;
-
-  const {
-    id: blogId,
-    title,
-    categories,
-    author,
-    created_at,
-    status,
-    image,
-    body,
-  } = blog || {};
-
-
   return (
-    <>
+    <Row type="horizontal">
       <Row>
-        <HeadingSecction>
-          <Heading>{title}</Heading>
-          <StatusTag status={status}>{status}</StatusTag>
-        </HeadingSecction>
+        <BlogContent blog={blog}/>
+        <Row type="flexEnd">
+          <Button variation="secondary" onClick={moveBack}>
+            Back
+          </Button>
+        </Row>
       </Row>
-      <ButtonGroup>
-          <Button variation='naked' onClick={moveBack}>&larr; Back</Button>
-      </ButtonGroup>
-
-      <ButtonGroup>
-          <Button variation='secondary' onClick={moveBack}>Back</Button>
-      </ButtonGroup>
+      <Row type="flexEnd"></Row>
+      <Row>
+        <Row type="flexEnd" type="vertical">
+          <StatusTag status={blog.status}>{blog.status}</StatusTag>
+          <Button variation="naked" onClick={moveBack}>
+            &larr; Back
+          </Button>
+        </Row>
+      </Row>
       {/* <div>
         <img src={image} alt={title} />
         <div>{author?.name}</div>
@@ -72,7 +60,7 @@ function BlogView() {
           })}
         </div>
       </div> */}
-    </>
+    </Row>
   );
 }
 
