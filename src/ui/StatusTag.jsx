@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const statusToTagName = {
-    draft: 'yellow',
-    published: 'green',
-    archived: 'red',
+  draft: 'yellow',
+  published: 'green',
+  archived: 'red',
 };
 
 const Tag = styled.span`
@@ -22,8 +22,9 @@ const Tag = styled.span`
 
 // I am uusing $type instead of type to avoid react warning about invalid DOM attribute
 
-function StatusTag({ status, children}) {
-  const type = statusToTagName[status.toLowerCase()] || 'gray';
+function StatusTag({ status, children }) {
+  const type =
+    typeof status === 'string' ? statusToTagName[status.toLowerCase()] : 'blue';
   return <Tag $type={type}>{children || status}</Tag>;
 }
 

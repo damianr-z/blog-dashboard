@@ -24,13 +24,21 @@ function BlogContent({ blog }) {
     body,
   } = blog || {};
 
+  const date = new Date(created_at).toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <>
       <HeadingSecction>
         <Heading>{title}</Heading>
       </HeadingSecction>
-      <div>{categories}</div>
+      <StatusTag>#{categories}</StatusTag>
       <div>Author: {author?.name}</div>
+      <div>Created on {date}</div>
       <p>{body}</p>
     </>
   );

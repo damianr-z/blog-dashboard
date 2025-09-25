@@ -24,6 +24,8 @@ function BlogView() {
   const { data: blog, isLoading } = useBlog();
   const { deleteBlog, isDeleting } = useDeleteBlog();
 
+  const { status } = blog || {};
+
   const navigate = useNavigate();
   const moveBack = useMoveBack();
 
@@ -31,7 +33,7 @@ function BlogView() {
   return (
     <Row type="horizontal">
       <Row>
-        <BlogContent blog={blog}/>
+        <BlogContent blog={blog} />
         <Row type="flexEnd">
           <Button variation="secondary" onClick={moveBack}>
             Back
@@ -41,7 +43,7 @@ function BlogView() {
       <Row type="flexEnd"></Row>
       <Row>
         <Row type="flexEnd" type="vertical">
-          <StatusTag status={blog.status}>{blog.status}</StatusTag>
+          <StatusTag status={status}>{status}</StatusTag>
           <Button variation="naked" onClick={moveBack}>
             &larr; Back
           </Button>
