@@ -73,6 +73,21 @@ export async function getBlog(id) {
   return data;
 }
 
+export async function updateBlogSatus(id, status) {
+  const { data, error } = await supabase
+    .from('blogs')
+    .update({ status })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('blog status could not be updated');
+  }
+  return data;
+}
+
 export async function deleteBlog(id) {
   const { data, error, count } = await supabase
     .from('blogs')

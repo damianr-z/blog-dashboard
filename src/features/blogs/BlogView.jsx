@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { useMoveBack } from '../../hooks/useMoveBack';
 import { useBlog } from './useBlog';
 import Spinner from '../../ui/Spinner';
+import { usePublish } from './usePublish';
+import { useDraft } from './useDraft';
+import { useArchive } from './useArchive';
 import { useDeleteBlog } from './useDeleteBlog';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import { HiArrowUpOnSquare } from 'react-icons/hi2';
@@ -22,6 +25,9 @@ const HeadingSecction = styled.div`
 
 function BlogView() {
   const { data: blog, isLoading } = useBlog();
+  const { publishBlog, isPublishing } = usePublish();
+  const { draftBlog, isDrafting } = useDraft();
+  const { archiveBlog, isArchiving } = useArchive();
   const { deleteBlog, isDeleting } = useDeleteBlog();
 
   const { status } = blog || {};
@@ -30,17 +36,89 @@ function BlogView() {
   const moveBack = useMoveBack();
 
   if (isLoading) return <Spinner />;
+
+  function handlePublish() {
+    if (blog?.status === 'draft' || blog?.status === 'archived') {
+      publishBlog({ blogId: blog.id, status: 'published' });
+    }
+  }
+
+  function handleDraft() {
+    if (blog?.status === 'published' || blog?.status === 'archived') {
+      draftBlog({ blogId: blog.id, status: 'draft' });
+    }
+  }
+
+  function handleArchive() {
+    if (blog?.status === 'draft' || blog?.status === 'published') {
+      archiveBlog({ blogId: blog.id, status: 'archived' });
+    }
+  }
+
   return (
     <Row type="horizontal">
       <Row>
         <BlogContent blog={blog} />
         <Row type="flexEnd">
-          <Button variation="secondary" onClick={moveBack}>
-            Back
+          <Button variation="naked" onClick={moveBack}>
+            &larr; Back
           </Button>
+          {status === 'draft' && (
+            <Row type="flexEnd">
+              <Button
+                variation="secondary"
+                onClick={handleArchive}
+                disabled={isArchiving || isDeleting}
+              >
+                Archive
+              </Button>
+              <Button
+                variation="primary"
+                onClick={handlePublish}
+                disabled={isPublishing || isDeleting}
+              >
+                Publish
+              </Button>
+            </Row>
+          )}
+          {status === 'archived' && (
+            <Row type="flexEnd">
+              <Button
+                variation="secondary"
+                onClick={handleDraft}
+                disabled={isDrafting || isDeleting}
+              >
+                Draft
+              </Button>
+              <Button
+                variation="primary"
+                onClick={handlePublish}
+                disabled={isPublishing || isDeleting}
+              >
+                Publish
+              </Button>
+            </Row>
+          )}
+          {status === 'published' && (
+            <Row type="flexEnd">
+              <Button
+                variation="secondary"
+                onClick={handleArchive}
+                disabled={isArchiving || isDeleting}
+              >
+                Archive
+              </Button>
+              <Button
+                variation="primary"
+                onClick={handleDraft}
+                disabled={isDrafting || isDeleting}
+              >
+                Draft
+              </Button>
+            </Row>
+          )}
         </Row>
       </Row>
-      <Row type="flexEnd"></Row>
       <Row>
         <Row type="flexEnd" type="vertical">
           <StatusTag status={status}>{status}</StatusTag>
@@ -49,19 +127,6 @@ function BlogView() {
           </Button>
         </Row>
       </Row>
-      {/* <div>
-        <img src={image} alt={title} />
-        <div>{author?.name}</div>
-        <div>{body}</div>
-        <div>
-          {new Date(created_at).toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </div>
-      </div> */}
     </Row>
   );
 }
