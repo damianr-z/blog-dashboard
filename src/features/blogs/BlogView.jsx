@@ -37,6 +37,7 @@ function BlogView() {
 
   if (isLoading) return <Spinner />;
 
+
   function handlePublish() {
     if (blog?.status === 'draft' || blog?.status === 'archived') {
       publishBlog({ blogId: blog.id, status: 'published' });
