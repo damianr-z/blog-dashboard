@@ -83,13 +83,13 @@ function Menus({ children }) {
   );
 }
 
-function Toggle({ id }) {
+function Toggle({ id, xPos, yPos }) {
   const { OpenId, close, setPosition, openMenu } = useContext(MenusContext);
   function handleClick(e) {
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition({
-      x: window.innerWidth - rect.width - (rect.x + 215),
-      y: rect.y + rect.height - 60,
+      x: window.innerWidth - rect.width - (rect.x + xPos || 0),
+      y: rect.y + rect.height + yPos || 0,
     });
 
     OpenId === '' || OpenId !== id ? openMenu(id) : close();

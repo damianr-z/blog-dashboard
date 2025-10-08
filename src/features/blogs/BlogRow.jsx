@@ -68,7 +68,7 @@ function BlogRow({ blog }) {
       <div>
         <Modal>
           <Menus.Menu>
-            <Menus.Toggle id={blogId} />
+            <Menus.Toggle id={blogId} xPos={215} yPos={-60} />
             <Menus.List id={blogId}>
               <Menus.Button
                 icon={<HiEye />}

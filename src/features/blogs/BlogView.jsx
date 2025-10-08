@@ -12,9 +12,12 @@ import { usePublish } from './usePublish';
 import { useDraft } from './useDraft';
 import { useArchive } from './useArchive';
 import { useDeleteBlog } from './useDeleteBlog';
+import { HiArrowUpOnSquare, HiTrash } from 'react-icons/hi2';
+import { FiEdit } from 'react-icons/fi';
 import ConfirmDelete from '../../ui/ConfirmDelete';
-import { HiArrowUpOnSquare } from 'react-icons/hi2';
+import Menus from '../../ui/Menus';
 import Modal from '../../ui/Modal';
+import Table from '../../ui/Table';
 
 const HeadingSecction = styled.div`
   display: flex;
@@ -30,28 +33,27 @@ function BlogView() {
   const { archiveBlog, isArchiving } = useArchive();
   const { deleteBlog, isDeleting } = useDeleteBlog();
 
-  const { status } = blog || {};
+  const { status, id: blogId } = blog || {};
 
   const navigate = useNavigate();
   const moveBack = useMoveBack();
 
   if (isLoading) return <Spinner />;
 
-
   function handlePublish() {
-    if (blog?.status === 'draft' || blog?.status === 'archived') {
+    if (status === 'draft' || status === 'archived') {
       publishBlog({ blogId: blog.id, status: 'published' });
     }
   }
 
   function handleDraft() {
-    if (blog?.status === 'published' || blog?.status === 'archived') {
+    if (status === 'published' || status === 'archived') {
       draftBlog({ blogId: blog.id, status: 'draft' });
     }
   }
 
   function handleArchive() {
-    if (blog?.status === 'draft' || blog?.status === 'published') {
+    if (status === 'draft' || status === 'published') {
       archiveBlog({ blogId: blog.id, status: 'archived' });
     }
   }
@@ -64,68 +66,88 @@ function BlogView() {
           <Button variation="naked" onClick={moveBack}>
             &larr; Back
           </Button>
-          {status === 'draft' && (
-            <Row type="flexEnd">
-              <Button
-                variation="secondary"
-                onClick={handleArchive}
-                disabled={isArchiving || isDeleting}
-              >
-                Archive
-              </Button>
-              <Button
-                variation="primary"
-                onClick={handlePublish}
-                disabled={isPublishing || isDeleting}
-              >
-                Publish
-              </Button>
-            </Row>
-          )}
-          {status === 'archived' && (
-            <Row type="flexEnd">
-              <Button
-                variation="secondary"
-                onClick={handleDraft}
-                disabled={isDrafting || isDeleting}
-              >
-                Draft
-              </Button>
-              <Button
-                variation="primary"
-                onClick={handlePublish}
-                disabled={isPublishing || isDeleting}
-              >
-                Publish
-              </Button>
-            </Row>
-          )}
-          {status === 'published' && (
-            <Row type="flexEnd">
-              <Button
-                variation="secondary"
-                onClick={handleArchive}
-                disabled={isArchiving || isDeleting}
-              >
-                Archive
-              </Button>
-              <Button
-                variation="primary"
-                onClick={handleDraft}
-                disabled={isDrafting || isDeleting}
-              >
-                Draft
-              </Button>
-            </Row>
-          )}
         </Row>
       </Row>
       <Row>
-        <Row type="flexEnd" type="vertical">
-          <StatusTag status={status}>{status}</StatusTag>
+        <Row type="flexEnd" type="horizontal">
           <Button variation="naked" onClick={moveBack}>
             &larr; Back
           </Button>
+          <StatusTag status={status}>{status}</StatusTag>
+        </Row>
+        <Row type="flexEnd">
+          <Menus>
+            <Modal>
+              <Menus.Menu>
+                <Menus.Toggle xPos={60} yPos={10} />
+                <Menus.List>
+                  {status === 'draft' && (
+                    <>
+                      <Menus.Button
+                        onClick={handleArchive}
+                        disabled={isArchiving || isDeleting}
+                      >
+                        Archive
+                      </Menus.Button>
+                      <Menus.Button
+                        onClick={handlePublish}
+                        disabled={isPublishing || isDeleting}
+                      >
+                        Publish
+                      </Menus.Button>
+                    </>
+                  )}
+                  {status === 'archived' && (
+                    <>
+                      <Menus.Button
+                        onClick={handleDraft}
+                        disabled={isDrafting || isDeleting}
+                      >
+                        Draft
+                      </Menus.Button>
+                      <Menus.Button
+                        onClick={handlePublish}
+                        disabled={isPublishing || isDeleting}
+                      >
+                        Publish
+                      </Menus.Button>
+                    </>
+                  )}
+                  {status === 'published' && (
+                    <>
+                      <Menus.Button
+                        onClick={handleArchive}
+                        disabled={isArchiving || isDeleting}
+                      >
+                        Archive
+                      </Menus.Button>
+                      <Menus.Button
+                        onClick={handleDraft}
+                        disabled={isDrafting || isDeleting}
+                      >
+                        Draft
+                      </Menus.Button>
+                    </>
+                  )}
+
+                  <Modal.Open opens="delete">
+                    <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                  </Modal.Open>
+                </Menus.List>
+
+                <Modal.Window name="delete">
+                  <ConfirmDelete
+                    resourceName="blogs"
+                    disabled={isDeleting}
+                    onConfirm={() => {
+                      deleteBlog(blogId);
+                      navigate('/blogs');
+                    }}
+                  />
+                </Modal.Window>
+              </Menus.Menu>
+            </Modal>
+          </Menus>
         </Row>
       </Row>
     </Row>

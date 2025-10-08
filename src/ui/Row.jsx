@@ -8,6 +8,7 @@ const Row = styled.div`
     props.type === 'horizontal' &&
     css`
       justify-content: space-between;
+      align-items: baseline;
     `}
 
   ${(props) =>
