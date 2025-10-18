@@ -58,6 +58,21 @@ function BlogView() {
     }
   }
 
+  const statusActions = {
+    draft: [
+      { label: 'Archive', action: handleArchive, disabled: isArchiving },
+      { label: 'Publish', action: handlePublish, disabled: isPublishing }
+    ],
+    archived: [
+      { label: 'Draft', action: handleDraft, disabled: isDrafting },
+      { label: 'Publish', action: handlePublish, disabled: isPublishing }
+    ],
+    published: [
+      { label: 'Archive', action: handleArchive, disabled: isArchiving },
+      { label: 'Draft', action: handleDraft, disabled: isDrafting }
+    ]
+  };
+
   return (
     <Row type="horizontal">
       <Row>
@@ -81,54 +96,15 @@ function BlogView() {
               <Menus.Menu>
                 <Menus.Toggle xPos={60} yPos={10} />
                 <Menus.List>
-                  {status === 'draft' && (
-                    <>
-                      <Menus.Button
-                        onClick={handleArchive}
-                        disabled={isArchiving || isDeleting}
-                      >
-                        Archive
-                      </Menus.Button>
-                      <Menus.Button
-                        onClick={handlePublish}
-                        disabled={isPublishing || isDeleting}
-                      >
-                        Publish
-                      </Menus.Button>
-                    </>
-                  )}
-                  {status === 'archived' && (
-                    <>
-                      <Menus.Button
-                        onClick={handleDraft}
-                        disabled={isDrafting || isDeleting}
-                      >
-                        Draft
-                      </Menus.Button>
-                      <Menus.Button
-                        onClick={handlePublish}
-                        disabled={isPublishing || isDeleting}
-                      >
-                        Publish
-                      </Menus.Button>
-                    </>
-                  )}
-                  {status === 'published' && (
-                    <>
-                      <Menus.Button
-                        onClick={handleArchive}
-                        disabled={isArchiving || isDeleting}
-                      >
-                        Archive
-                      </Menus.Button>
-                      <Menus.Button
-                        onClick={handleDraft}
-                        disabled={isDrafting || isDeleting}
-                      >
-                        Draft
-                      </Menus.Button>
-                    </>
-                  )}
+                  {status && statusActions[status].map(item => (
+                    <Menus.Button
+                      key={item.label}
+                      onClick={item.action}
+                      disabled={item.disabled}
+                    >
+                      {item.label}
+                    </Menus.Button>
+                  ))}
 
                   <Modal.Open opens="delete">
                     <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
