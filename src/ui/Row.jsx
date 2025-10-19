@@ -18,15 +18,14 @@ const Row = styled.div`
       justify-content: space-between;
       gap: 1.6rem;
     `}
-  ${(props) => 
-    props.type === "flexEnd" &&
+  ${(props) =>
+    props.flexjustify === 'flexEnd' &&
     css`
-    min-width: max-content;
-    justify-content: flex-end;
-    align-content: flex-end;
-    gap: 1.2rem;
-
-    `}  
+      min-width: max-content;
+      justify-content: flex-end;
+      align-content: flex-end;
+      gap: 1.2rem;
+    `}
 `;
 
 Row.defaultProps = {

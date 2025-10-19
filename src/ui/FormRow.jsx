@@ -1,4 +1,21 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const visibility = {
+  visible: css`
+    font-weight: 500;
+    padding-bottom: 0.6rem;
+  `,
+  hidden: css`
+    position: absolute;
+    clip: rect(0, 0, , 0);
+    margin: -1px;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+  `,
+};
 
 const StyledFormRow = styled.fieldset`
   display: grid;
@@ -8,15 +25,6 @@ const StyledFormRow = styled.fieldset`
   &:first-child {
     padding-top: 0;
   }
-
-  &:nth-child(2) {
-  }
-
-
-  &:nth-child(3) { 
-    width: 200px;
-  }
-
 
   &:has(input[type='file']) {
     border: 1px solid var(--c-grey-500);
@@ -29,6 +37,7 @@ const StyledFormRow = styled.fieldset`
     display: flex;
     justify-content: flex-end;
     gap: 1.2rem;
+    margin-top: 1.2rem;
   }
 
   &:not(:last-child) {
@@ -37,6 +46,7 @@ const StyledFormRow = styled.fieldset`
 `;
 
 const Label = styled.label`
+  /* font-weight: 500;
   position: absolute;
   clip: rect(1px, 1px, 1px, 1px);
   padding: 0;
@@ -44,7 +54,8 @@ const Label = styled.label`
   border: 0;
   height: 1px;
   width: 1px;
-  overflow: hidden;
+  overflow: hidden; */
+  ${(props) => visibility[props.visibility || 'hidden']}
 `;
 
 const Error = styled.span`
@@ -53,10 +64,14 @@ const Error = styled.span`
   padding: 0.5rem 0.3rem;
 `;
 
-function FormRow({ children, error, label }) {
+function FormRow({ children, error, label, visibility }) {
   return (
     <StyledFormRow>
-      {label && <Label htmlFor={children.props.id}>{label}</Label>}
+      {label && (
+        <Label visibility={visibility} htmlFor={children.props.id}>
+          {label}
+        </Label>
+      )}
       {children}
       {error && <Error>{error}</Error>}
     </StyledFormRow>

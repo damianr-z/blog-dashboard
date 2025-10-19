@@ -58,45 +58,52 @@ function BlogView() {
     }
   }
 
-  const statusActions = {
-    draft: [
-      { label: 'Archive', action: handleArchive, disabled: isArchiving },
-      { label: 'Publish', action: handlePublish, disabled: isPublishing }
-    ],
-    archived: [
-      { label: 'Draft', action: handleDraft, disabled: isDrafting },
-      { label: 'Publish', action: handlePublish, disabled: isPublishing }
-    ],
-    published: [
-      { label: 'Archive', action: handleArchive, disabled: isArchiving },
-      { label: 'Draft', action: handleDraft, disabled: isDrafting }
-    ]
-  };
+  function getStatusActions() {
+    switch (status) {
+      case 'draft':
+        return [
+          { label: 'Archive', action: handleArchive, disabled: isArchiving },
+          { label: 'Publish', action: handlePublish, disabled: isPublishing },
+        ];
+      case 'archived':
+        return [
+          { label: 'Draft', action: handleDraft, disabled: isDrafting },
+          { label: 'Publish', action: handlePublish, disabled: isPublishing },
+        ];
+      case 'published':
+        return [
+          { label: 'Archive', action: handleArchive, disabled: isArchiving },
+          { label: 'Draft', action: handleDraft, disabled: isDrafting },
+        ];
+      default:
+        return [];
+    }
+  }
 
   return (
     <Row type="horizontal">
       <Row>
         <BlogContent blog={blog} />
-        <Row type="flexEnd">
+        <Row flexjustify="flexEnd">
           <Button variation="naked" onClick={moveBack}>
             &larr; Back
           </Button>
         </Row>
       </Row>
       <Row>
-        <Row type="flexEnd" type="horizontal">
+        <Row flexjustify="flexEnd" type="horizontal">
           <Button variation="naked" onClick={moveBack}>
             &larr; Back
           </Button>
           <StatusTag status={status}>{status}</StatusTag>
         </Row>
-        <Row type="flexEnd">
+        <Row flexjustify="flexEnd">
           <Menus>
             <Modal>
               <Menus.Menu>
                 <Menus.Toggle xPos={60} yPos={10} />
                 <Menus.List>
-                  {status && statusActions[status].map(item => (
+                  {getStatusActions().map((item) => (
                     <Menus.Button
                       key={item.label}
                       onClick={item.action}
@@ -110,18 +117,16 @@ function BlogView() {
                     <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
                   </Modal.Open>
                 </Menus.List>
-
-                <Modal.Window name="delete">
-                  <ConfirmDelete
-                    resourceName="blogs"
-                    disabled={isDeleting}
-                    onConfirm={() => {
-                      deleteBlog(blogId);
-                      navigate('/blogs');
-                    }}
-                  />
-                </Modal.Window>
               </Menus.Menu>
+              <Modal.Window name="delete">
+                <ConfirmDelete
+                  resourceName="blogs"
+                  disabled={isDeleting}
+                  onConfirm={() => {
+                    deleteBlog(blogId, { onSettled: () => navigate(-1) });
+                  }}
+                />
+              </Modal.Window>
             </Modal>
           </Menus>
         </Row>

@@ -25,7 +25,7 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
         action cannot be undone.
       </p>
 
-      <Row type="flexEnd">
+      <Row flexjustify="flexEnd" type="horizontal">
         <Button
           variation="secondary"
           disabled={disabled}
