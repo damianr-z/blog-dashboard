@@ -14,7 +14,18 @@ function LoginForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!email || !password) return;
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail('');
+          setPassword('');
+        },
+      }
+    );
   }
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormRow visibility="visible" label="Email address">
