@@ -1,21 +1,25 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { deleteBlog as deleteBlogApi } from '../../services/apiBlogs';
+import { useSupabase } from '../../hooks/useSupabase';
 
 export function useDeleteBlog() {
-    const queryClient = useQueryClient();
-  
-    const { isLoading: isDeleting, mutate: deleteBlog } = useMutation({
-      mutationFn: deleteBlogApi,
-      onSuccess: () => {
-        toast.success('Blog successfully deleted');
-        queryClient.invalidateQueries({
-          queryKey: ['blogs'],
-        });
-      },
-      onError: (err) => toast.error(err.message),
-    });
-  
-    return { isDeleting, deleteBlog };
-  }
-  
+  const queryClient = useQueryClient();
+  const supabase = useSupabase();
+
+  console.log('useDeleteBlog - supabase:', supabase);
+  console.log('useDeleteBlog - typeof supabase?.from:', typeof supabase?.from);
+
+  const { isLoading: isDeleting, mutate: deleteBlog } = useMutation({
+    mutationFn: (id) => deleteBlogApi(supabase, id),
+    onSuccess: () => {
+      toast.success('Blog successfully deleted');
+      queryClient.invalidateQueries({
+        queryKey: ['blogs'],
+      });
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  return { isDeleting, deleteBlog };
+}

@@ -1,20 +1,19 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { getBlogs, deleteBlog as deleteBlogApi } from '../../services/apiBlogs';
-import { createEditBlog } from "../../services/apiBlogs";
-
+import { createEditBlog } from '../../services/apiBlogs';
+import { useSupabase } from '../../hooks/useSupabase';
 /// to call all blogs
-
 
 // create blog
 export function useCreateBlog() {
   const queryClient = useQueryClient();
+  const supabase = useSupabase();
 
   const { mutate: createBlog, isLoading: isCreating } = useMutation({
-    mutationFn: createEditBlog,
+    mutationFn: (newBlog) => createEditBlog(supabase, newBlog),
     onSuccess: () => {
-      toast.success("New blog successfully created");
-      queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      toast.success('New blog successfully created');
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
     },
     onError: (err) => toast.error(err.message),
   });

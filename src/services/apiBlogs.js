@@ -1,8 +1,8 @@
-import supabase, { supabaseUrl } from './supabase';
+import { supabaseUrl } from './supabase';
 import { PAGE_SIZE } from '../utils/constants';
 
-export async function getBlogs() {
-  const { data, error, count } = await supabase
+export async function getBlogs(supabaseClient) {
+  const { data, error, count } = await supabaseClient
     .from('blogs')
     .select('*, author(name)', { count: 'exact' });
 
@@ -14,7 +14,22 @@ export async function getBlogs() {
   return { data, count };
 }
 
-export async function createEditBlog(newBlog, id) {
+export async function getBlog(supabaseClient, id) {
+  const { data, error } = await supabaseClient
+    .from('blogs')
+    .select('*, author(name)')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('blog could not be loaded');
+  }
+
+  return data;
+}
+
+export async function createEditBlog(newBlog, supabaseClient, id) {
   const hasImagePath =
     typeof newBlog.image === 'string' && newBlog.image.startsWith('http');
   const imageName = `${Math.random()}-${newBlog.image.name}`.replaceAll(
@@ -58,23 +73,8 @@ export async function createEditBlog(newBlog, id) {
   return data;
 }
 
-export async function getBlog(id) {
-  const { data, error } = await supabase
-    .from('blogs')
-    .select('*, author(name)')
-    .eq('id', id)
-    .single();
-
-  if (error) {
-    console.error(error);
-    throw new Error('blog could not be loaded');
-  }
-
-  return data;
-}
-
-export async function updateBlogSatus(id, status) {
-  const { data, error } = await supabase
+export async function updateBlogStatus(supabaseClient, id, status) {
+  const { data, error } = await supabaseClient
     .from('blogs')
     .update({ status })
     .eq('id', id)
@@ -88,8 +88,8 @@ export async function updateBlogSatus(id, status) {
   return data;
 }
 
-export async function deleteBlog(id) {
-  const { data, error, count } = await supabase
+export async function deleteBlog(id, supabaseClient) {
+  const { data, error, count } = await supabaseClient
     .from('blogs')
     .delete()
     .eq('id', id);

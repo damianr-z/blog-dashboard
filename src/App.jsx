@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
 import { Toaster } from 'react-hot-toast';
+import { useAuth } from '@clerk/clerk-react';
 
 import Dashboard from './pages/Dashboard';
 import Blogs from './Pages/Blogs';
@@ -13,6 +13,27 @@ import Account from './Pages/Account';
 import Login from './Pages/Login';
 import PageNotFound from './Pages/PageNotFound';
 import Layout from './ui/Layout';
+import Spinner from './ui/Spinner';
+
+// ProtectedRoute component to guard routes that require authentication
+function ProtectedRoute({ children }) {
+  const { isSignedIn, isLoaded } = useAuth();
+
+  const BYPASS_AUTH = true;
+
+  if (BYPASS_AUTH) {
+    return children;
+  }
+  // Wait for Clerk to load
+  if (!isLoaded) return <Spinner />;
+
+  // Redirect to login if not signed in
+  if (!isSignedIn) {
+    return <Navigate to="/login" replace />;
+  }
+  // User is authenticated, render the protecte content
+  return children;
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +51,14 @@ export default function App() {
       <BrowserRouter>
         {/* navigate to home page if no path is provided */}
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="blogs" element={<Blogs />} />
             <Route path="blogs/:blogId" element={<Blog />} />

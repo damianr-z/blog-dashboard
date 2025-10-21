@@ -1,5 +1,5 @@
-import { useSearchParams } from "react-router-dom";
-import styled, { css } from "styled-components";
+import { useSearchParams } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 const StyledFilter = styled.div`
   border: 1px solid var(--c-grey-200);
@@ -9,16 +9,16 @@ const StyledFilter = styled.div`
   padding: 0.4rem;
   display: flex;
   gap: 0.4rem;
-  `;
+`;
 
 const FilterButton = styled.button`
   color: var(--c-white-200);
   background-color: var(--c-grey-100);
   border: none;
   cursor: pointer;
-  
+
   ${(props) =>
-    props.active &&
+    props.$active &&
     css`
       background-color: var(--c-blue-600);
       color: var(--c-blue-50);
@@ -43,7 +43,7 @@ function Filter({ filterField, options }) {
 
   function handleClick(value) {
     searchParams.set(filterField, value);
-    if (searchParams.get("page")) searchParams.set("page", 1);
+    if (searchParams.get('page')) searchParams.set('page', 1);
 
     setSearchParams(searchParams);
   }
@@ -54,7 +54,7 @@ function Filter({ filterField, options }) {
         <FilterButton
           key={option.value}
           onClick={() => handleClick(option.value)}
-          active={option.value === currentFilter}
+          $active={option.value === currentFilter}
           disabled={option.value === currentFilter}
         >
           {option.label}

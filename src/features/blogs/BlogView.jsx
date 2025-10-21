@@ -8,9 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { useMoveBack } from '../../hooks/useMoveBack';
 import { useBlog } from './useBlog';
 import Spinner from '../../ui/Spinner';
-import { usePublish } from './usePublish';
-import { useDraft } from './useDraft';
-import { useArchive } from './useArchive';
+// import { usePublish } from './usePublish';
+// import { useDraft } from './useDraft';
+// import { useArchive } from './useArchive';
+import { useUpdateBlogStatus } from './useUpdateBlogStatus';
 import { useDeleteBlog } from './useDeleteBlog';
 import { HiArrowUpOnSquare, HiTrash } from 'react-icons/hi2';
 import { FiEdit } from 'react-icons/fi';
@@ -28,10 +29,11 @@ const HeadingSecction = styled.div`
 
 function BlogView() {
   const { data: blog, isLoading } = useBlog();
-  const { publishBlog, isPublishing } = usePublish();
-  const { draftBlog, isDrafting } = useDraft();
-  const { archiveBlog, isArchiving } = useArchive();
+  // const { publishBlog, isPublishing } = usePublish();
+  // const { draftBlog, isDrafting } = useDraft();
+  // const { archiveBlog, isArchiving } = useArchive();
   const { deleteBlog, isDeleting } = useDeleteBlog();
+  const { updateBlogStatus, isUpdating } = useUpdateBlogStatus();
 
   const { status, id: blogId } = blog || {};
 
@@ -40,40 +42,68 @@ function BlogView() {
 
   if (isLoading) return <Spinner />;
 
-  function handlePublish() {
-    if (status === 'draft' || status === 'archived') {
-      publishBlog({ blogId: blog.id, status: 'published' });
-    }
-  }
+  // function handlePublish() {
+  //   if (status === 'draft' || status === 'archived') {
+  //     publishBlog({ blogId: blog.id, status: 'published' });
+  //   }
+  // }
 
-  function handleDraft() {
-    if (status === 'published' || status === 'archived') {
-      draftBlog({ blogId: blog.id, status: 'draft' });
-    }
-  }
+  // function handleDraft() {
+  //   if (status === 'published' || status === 'archived') {
+  //     draftBlog({ blogId: blog.id, status: 'draft' });
+  //   }
+  // }
 
-  function handleArchive() {
-    if (status === 'draft' || status === 'published') {
-      archiveBlog({ blogId: blog.id, status: 'archived' });
-    }
+  // function handleArchive() {
+  //   if (status === 'draft' || status === 'published') {
+  //     archiveBlog({ blogId: blog.id, status: 'archived' });
+  //   }
+  // }
+
+  function handleUpdateStatus(newStatus) {
+    updateBlogStatus({ status: newStatus, blogId: blog.id });
   }
 
   function getStatusActions() {
     switch (status) {
       case 'draft':
         return [
-          { label: 'Archive', action: handleArchive, disabled: isArchiving },
-          { label: 'Publish', action: handlePublish, disabled: isPublishing },
+          {
+            label: 'Archive',
+            action: () => handleUpdateStatus('archived'),
+            disabled: isUpdating,
+          },
+          {
+            label: 'Publish',
+            action: () => handleUpdateStatus('published'),
+            disabled: isUpdating,
+          },
         ];
       case 'archived':
         return [
-          { label: 'Draft', action: handleDraft, disabled: isDrafting },
-          { label: 'Publish', action: handlePublish, disabled: isPublishing },
+          {
+            label: 'Draft',
+            action: () => handleUpdateStatus('draft'),
+            disabled: isUpdating,
+          },
+          {
+            label: 'Publish',
+            action: () => handleUpdateStatus('published'),
+            disabled: isUpdating,
+          },
         ];
       case 'published':
         return [
-          { label: 'Archive', action: handleArchive, disabled: isArchiving },
-          { label: 'Draft', action: handleDraft, disabled: isDrafting },
+          {
+            label: 'Archive',
+            action: () => handleUpdateStatus('archived'),
+            disabled: isUpdating,
+          },
+          {
+            label: 'Draft',
+            action: () => handleUpdateStatus('draft'),
+            disabled: isUpdating,
+          },
         ];
       default:
         return [];
