@@ -19,7 +19,7 @@ import Spinner from './ui/Spinner';
 function ProtectedRoute({ children }) {
   const { isSignedIn, isLoaded } = useAuth();
 
-  const BYPASS_AUTH = true;
+  const BYPASS_AUTH = false;
 
   if (BYPASS_AUTH) {
     return children;

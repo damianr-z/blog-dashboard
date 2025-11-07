@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import {useSignIn, useAuth} from '@clerk/clerk-react';
-import {useNavigate} from 'react-router-dom';
+import { useSignIn, useAuth } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-
 
 import Button from '../../ui/Button';
 import Form from '../../ui/Form';
@@ -13,8 +12,8 @@ import SpinnerMini from '../../ui/SpinnerMini';
 
 function LoginForm() {
   // const { login, isLoading } = useLogin();
-  const {signIn, setActive, isLoaded: signInLoaded} = useSignIn();
-  const {isSignedIn, isLoaded: authLoaded} = useAuth();
+  const { signIn, setActive, isLoaded: signInLoaded } = useSignIn();
+  const { isSignedIn, isLoaded: authLoaded } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -22,10 +21,9 @@ function LoginForm() {
 
   useEffect(() => {
     if (authLoaded && isSignedIn) {
-        navigate('/blogs', { replace: true });
+      navigate('/blogs', { replace: true });
     }
   }, [authLoaded, isSignedIn, navigate]);
-
 
   // function handleSubmit(e) {
   //   e.preventDefault();
@@ -41,7 +39,6 @@ function LoginForm() {
   //   login({ email, password });
   // }
 
-
   async function handleSubmit(e) {
     e.preventDefault();
     if (!signInLoaded || !email || !password) return;
@@ -49,21 +46,23 @@ function LoginForm() {
     setIsLoading(true);
 
     try {
-        const result = await signIn.create({
-            identifier: email,
-            password,
-        });
-        if (result.status === "complete") {
-            await setActive({ session: result.createdSessionId });
-            toast.success("Successfully logged in!");
-            navigate('/blogs', { replace: true });
-        } else {
-            // to handle other statuses if needed 
-            console.log("Sign-in status", result.status);
-        }
+      const result = await signIn.create({
+        identifier: email,
+        password,
+      });
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId });
+        toast.success('Successfully logged in!');
+        navigate('/blogs', { replace: true });
+      } else {
+        // to handle other statuses if needed
+        console.log('Sign-in status', result.status);
+      }
     } catch (err) {
-        console.error('Login error:', err);
-        toast.error(err.errors?.[0]?.message || 'Provided email and password are incorrect ');
+      console.error('Login error:', err);
+      toast.error(
+        err.errors?.[0]?.message || 'Provided email and password are incorrect '
+      );
     } finally {
       setIsLoading(false);
       setEmail('');

@@ -22,6 +22,6 @@ export function useLogin() {
   const login = () => {
     toast.info('Login is currently disabled in this demo.');
   };
-  const isLoading = false;
+  // const isLoading = false;
   return { login, isLoading };
 }
