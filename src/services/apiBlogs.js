@@ -1,4 +1,4 @@
-import { supabaseUrl } from './supabase';
+import supabase, { supabaseUrl } from './supabase';
 import { PAGE_SIZE } from '../utils/constants';
 
 export async function getBlogs(supabaseClient) {
@@ -41,7 +41,7 @@ export async function createEditBlog(newBlog, supabaseClient, id) {
     : `${supabaseUrl}/storage/v1/object/public/posts-images/${imageName}`;
 
   // Create / edit blog
-  let query = supabase.from('blogs');
+  let query = supabaseClient.from('blogs');
 
   // create new blog
   if (!id) query = query.insert([{ ...newBlog, image: imagePath }]);
@@ -60,12 +60,12 @@ export async function createEditBlog(newBlog, supabaseClient, id) {
   // if the image is already a url, return the data
   if (hasImagePath) return data;
 
-  const { error: storageError } = await supabase.storage
+  const { error: storageError } = await supabaseClient.storage
     .from('posts-images')
     .upload(imageName, newBlog.image);
 
   if (storageError) {
-    await supabase.from('blogs').delete().eq('id', data.id);
+    await supabaseClient.from('blogs').delete().eq('id', data.id);
     console.log(storageError);
     throw new Error('image could not be uploaded');
   }
@@ -88,7 +88,7 @@ export async function updateBlogStatus(supabaseClient, id, status) {
   return data;
 }
 
-export async function deleteBlog(id, supabaseClient) {
+export async function deleteBlog(supabaseClient, id) {
   const { data, error, count } = await supabaseClient
     .from('blogs')
     .delete()

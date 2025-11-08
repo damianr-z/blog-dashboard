@@ -1,14 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { deleteBlog as deleteBlogApi } from '../../services/apiBlogs';
-import { useSupabase } from '../../hooks/useSupabase';
+import supabase from '../../services/supabase';
 
 export function useDeleteBlog() {
   const queryClient = useQueryClient();
-  const supabase = useSupabase();
-
-  console.log('useDeleteBlog - supabase:', supabase);
-  console.log('useDeleteBlog - typeof supabase?.from:', typeof supabase?.from);
 
   const { isLoading: isDeleting, mutate: deleteBlog } = useMutation({
     mutationFn: (id) => deleteBlogApi(supabase, id),

@@ -28,7 +28,7 @@ const HeadingSecction = styled.div`
 `;
 
 function BlogView() {
-  const { data: blog, isLoading } = useBlog();
+  const { blog, isLoading } = useBlog();
   // const { publishBlog, isPublishing } = usePublish();
   // const { draftBlog, isDrafting } = useDraft();
   // const { archiveBlog, isArchiving } = useArchive();
@@ -61,53 +61,62 @@ function BlogView() {
   // }
 
   function handleUpdateStatus(newStatus) {
-    updateBlogStatus({ status: newStatus, blogId: blog.id });
+    updateBlogStatus({ status: newStatus });
   }
 
   function getStatusActions() {
-    switch (status) {
-      case 'draft':
-        return [
-          {
-            label: 'Archive',
-            action: () => handleUpdateStatus('archived'),
-            disabled: isUpdating,
-          },
-          {
-            label: 'Publish',
-            action: () => handleUpdateStatus('published'),
-            disabled: isUpdating,
-          },
-        ];
-      case 'archived':
-        return [
-          {
-            label: 'Draft',
-            action: () => handleUpdateStatus('draft'),
-            disabled: isUpdating,
-          },
-          {
-            label: 'Publish',
-            action: () => handleUpdateStatus('published'),
-            disabled: isUpdating,
-          },
-        ];
-      case 'published':
-        return [
-          {
-            label: 'Archive',
-            action: () => handleUpdateStatus('archived'),
-            disabled: isUpdating,
-          },
-          {
-            label: 'Draft',
-            action: () => handleUpdateStatus('draft'),
-            disabled: isUpdating,
-          },
-        ];
-      default:
-        return [];
-    }
+
+    const actions = (() => {
+      switch (status) {
+        case 'draft':
+          return [
+            {
+              label: 'Archive',
+              action: () => handleUpdateStatus('archived'),
+              disabled: isUpdating,
+            },
+            {
+              label: 'Publish',
+              action: () => handleUpdateStatus('published'),
+              disabled: isUpdating,
+            },
+          ];
+        case 'archived':
+          return [
+            {
+              label: 'Draft',
+              action: () => handleUpdateStatus('draft'),
+              disabled: isUpdating,
+            },
+            {
+              label: 'Publish',
+              action: () => handleUpdateStatus('published'),
+              disabled: isUpdating,
+            },
+          ];
+        case 'published':
+          return [
+            {
+              label: 'Archive',
+              action: () => handleUpdateStatus('archived'),
+              disabled: isUpdating,
+            },
+            {
+              label: 'Draft',
+              action: () => handleUpdateStatus('draft'),
+              disabled: isUpdating,
+            },
+          ];
+        default:
+          console.log(
+            '🚨 getStatusActions - default case hit, status:',
+            status
+          );
+          return [];
+      }
+    })();
+
+    return actions;
   }
 
   return (
@@ -153,7 +162,8 @@ function BlogView() {
                   resourceName="blogs"
                   disabled={isDeleting}
                   onConfirm={() => {
-                    deleteBlog(blogId, { onSettled: () => navigate(-1) });
+                    deleteBlog(blogId);
+                    navigate(-1);
                   }}
                 />
               </Modal.Window>
