@@ -14,16 +14,16 @@ function LoginForm() {
   // const { login, isLoading } = useLogin();
   const { signIn, setActive, isLoaded: signInLoaded } = useSignIn();
   const { isSignedIn, isLoaded: authLoaded } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('damian@example.com');
+  const [password, setPassword] = useState('anothergreatpass1');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (authLoaded && isSignedIn) {
-      navigate('/blogs', { replace: true });
-    }
-  }, [authLoaded, isSignedIn, navigate]);
+  // useEffect(() => {
+  //   if (authLoaded && isSignedIn) {
+  //     navigate('/blogs', { replace: true });
+  //   }
+  // }, [authLoaded, isSignedIn, navigate]);
 
   // function handleSubmit(e) {
   //   e.preventDefault();
@@ -39,6 +39,11 @@ function LoginForm() {
   //   login({ email, password });
   // }
 
+  if (authLoaded && isSignedIn) {
+    navigate('/blogs', { replace: true });
+    return null; // Don't render the form
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (!signInLoaded || !email || !password) return;
@@ -52,14 +57,22 @@ function LoginForm() {
       });
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId });
+        console.log('✅ Clerk login successful:', result);
         toast.success('Successfully logged in!');
         navigate('/blogs', { replace: true });
       } else {
         // to handle other statuses if needed
-        console.log('Sign-in status', result.status);
       }
     } catch (err) {
-      console.error('Login error:', err);
+      console.error('❌ Clerk login failed:', err);
+
+      // // ✅ Handle session exists error
+      // if (err.errors?.[0]?.code === 'session_exists') {
+      //   toast.success('You are already signed in! Redirecting...');
+      //   navigate('/blogs', { replace: true });
+      //   return;
+      // }
+
       toast.error(
         err.errors?.[0]?.message || 'Provided email and password are incorrect '
       );

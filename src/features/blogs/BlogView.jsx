@@ -29,9 +29,6 @@ const HeadingSecction = styled.div`
 
 function BlogView() {
   const { blog, isLoading } = useBlog();
-  // const { publishBlog, isPublishing } = usePublish();
-  // const { draftBlog, isDrafting } = useDraft();
-  // const { archiveBlog, isArchiving } = useArchive();
   const { deleteBlog, isDeleting } = useDeleteBlog();
   const { updateBlogStatus, isUpdating } = useUpdateBlogStatus();
 
@@ -42,23 +39,6 @@ function BlogView() {
 
   if (isLoading) return <Spinner />;
 
-  // function handlePublish() {
-  //   if (status === 'draft' || status === 'archived') {
-  //     publishBlog({ blogId: blog.id, status: 'published' });
-  //   }
-  // }
-
-  // function handleDraft() {
-  //   if (status === 'published' || status === 'archived') {
-  //     draftBlog({ blogId: blog.id, status: 'draft' });
-  //   }
-  // }
-
-  // function handleArchive() {
-  //   if (status === 'draft' || status === 'published') {
-  //     archiveBlog({ blogId: blog.id, status: 'archived' });
-  //   }
-  // }
 
   function handleUpdateStatus(newStatus) {
     updateBlogStatus({ status: newStatus });
