@@ -32,35 +32,37 @@ export async function getBlog(supabaseClient, id) {
 export async function createEditBlog(supabaseClient, newBlog, id) {
   console.log('🔍 Original newBlog:', newBlog);
   console.log('🔍 newBlog.author:', newBlog.author);
+  console.log('🔍 newBlog.id:', newBlog.id);
 
   const hasImagePath =
     typeof newBlog.image === 'string' && newBlog.image.startsWith('http');
-  const imageName = `${Math.random()}-${newBlog.image.name}`.replaceAll(
-    '/',
-    ''
-  );
+
+  const imageName = hasImagePath
+    ? ''
+    : `${Math.random()}-${newBlog.image.name}`.replaceAll('/', '');
+
   const imagePath = hasImagePath
     ? newBlog.image
     : `${supabaseUrl}/storage/v1/object/public/posts-images/${imageName}`;
 
-  // ✅ Get the original blog's author ID from the database
+  // ✅ Get author ID by searching for author by name
   let originalAuthorId = null;
 
-  // If we're duplicating an existing blog, get its author ID
-  if (newBlog.id) {
-    const { data: originalBlog } = await supabaseClient
-      .from('blogs')
-      .select('author')
-      .eq('id', newBlog.id)
+  if (newBlog.author && newBlog.author.name) {
+    console.log('🔍 Searching for author by name:', newBlog.author.name);
+
+    const { data: authorData } = await supabaseClient
+      .from('author')
+      .select('id')
+      .eq('name', newBlog.author.name.trim()) // Remove any extra spaces
       .single();
-    originalAuthorId = originalBlog?.author;
-  } else {
-    // Handle author ID for new blogs or when author is provided
-    originalAuthorId =
-      typeof newBlog.author === 'object'
-        ? newBlog.author?.id // If it's a populated object, get the ID
-        : newBlog.author;
+
+    originalAuthorId = authorData?.id;
+    console.log('🔍 Found author ID by name:', originalAuthorId);
   }
+
+  console.log('🔍 Final originalAuthorId:', originalAuthorId);
+  console.log('🔍 originalAuthorId type:', typeof originalAuthorId);
 
   const {
     author, // Remove populated author object: {"name":"Damian "}
@@ -82,17 +84,13 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
   // Create / edit blog
   let query = supabaseClient.from('blogs');
 
-  // create new blog
   if (!id) query = query.insert([blogDataToInsert]);
-
-  // edit blog
-  // when updating data there is no need to insert a new array
   if (id) query = query.update(blogDataToInsert).eq('id', id);
 
   const { data, error } = await query.select().single();
 
   if (error) {
-    console.log(error);
+    console.log('❌ Database error:', error);
     throw new Error('blog could not be created');
   }
 
