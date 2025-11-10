@@ -1,18 +1,52 @@
 import supabase, { supabaseUrl } from './supabase';
 import { PAGE_SIZE } from '../utils/constants';
 
-export async function getBlogs(supabaseClient) {
-  const { data, error, count } = await supabaseClient
+//////////////////// Get all blogs ////////////////////////
+
+export async function getBlogs(supabaseClient, { filter, sortBy, page } = {}) {
+  console.log('🔍 API getBlogs called with:', { filter, sortBy, page });
+
+  let query = supabaseClient
     .from('blogs')
     .select('*, author(name)', { count: 'exact' });
 
+  // ✅ Apply filtering - match your Filter component options
+  if (filter && filter !== 'all') {
+    // console.log('🔍 Applying filter:', filter);
+    query = query.eq('status', filter);
+  }
+
+  // ✅ Apply sorting - match your SortBy component options
+  if (sortBy) {
+    const [field, direction] = sortBy.split('-');
+    const ascending = direction === 'oldest'; // oldest = ascending, newest = descending
+    // console.log('🔍 Applying sort:', { field, direction, ascending });
+    query = query.order(field, { ascending });
+  }
+
+  // ✅ Apply pagination
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    // console.log('🔍 Applying pagination:', { from, to, page });
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
+
   if (error) {
-    console.log(error);
+    console.log('❌ Query error:', error);
     throw new Error('blogs could not be loaded');
   }
 
+  console.log('✅ Query successful:', {
+    dataCount: data?.length,
+    totalCount: count,
+  });
   return { data, count };
 }
+
+/////////////////// Get single blog ////////////////////////
 
 export async function getBlog(supabaseClient, id) {
   const { data, error } = await supabaseClient
@@ -28,6 +62,8 @@ export async function getBlog(supabaseClient, id) {
 
   return data;
 }
+
+/////////////////// Create / Edit blog ////////////////////////
 
 export async function createEditBlog(supabaseClient, newBlog, id) {
   console.log('🔍 Original newBlog:', newBlog);
@@ -110,6 +146,8 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
   return data;
 }
 
+/////////////////// Update blog status ////////////////////////
+
 export async function updateBlogStatus(supabaseClient, id, status) {
   const { data, error } = await supabaseClient
     .from('blogs')
@@ -124,6 +162,8 @@ export async function updateBlogStatus(supabaseClient, id, status) {
   }
   return data;
 }
+
+/////////////////// Delete blog ////////////////////////
 
 export async function deleteBlog(supabaseClient, id) {
   const { data, error, count } = await supabaseClient

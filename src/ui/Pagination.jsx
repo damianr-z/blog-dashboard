@@ -59,8 +59,6 @@ const PaginationButton = styled.button`
   }
 `;
 
- // Assuming PAGE_SIZE is defined somewhere
-
 function Pagination({ count }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = !searchParams.get('page')
@@ -74,6 +72,7 @@ function Pagination({ count }) {
     searchParams.set('page', next);
     setSearchParams(searchParams);
   }
+
   function prevPage() {
     const prev = currentPage === 1 ? currentPage : currentPage - 1;
     searchParams.set('page', prev);

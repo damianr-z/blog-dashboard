@@ -1,7 +1,9 @@
 import { createContext, useContext } from 'react';
 import styled from 'styled-components';
 
-const StyledTable = styled.div`
+const StyledTable = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'columns',
+})`
   background-color: var(--c-grey-400);
   color: var(--c-white-100);
   border-radius: var(--border-radius-lg);
@@ -9,7 +11,9 @@ const StyledTable = styled.div`
   shadow: var(--shadow-lg);
 `;
 
-const CommonRow = styled.div`
+const CommonRow = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'columns',
+})`
   display: grid;
   grid-template-columns: ${(props) => props.columns};
   column-gap: 2.4rem;

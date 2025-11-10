@@ -1,42 +1,67 @@
-// import { useQuery } from '@tanstack/react-query';
-// // import { useParams } from 'react-router-dom';
-// import { getBlogs } from '../../services/apiBlogs';
-// import { useSupabase } from '../../hooks/useSupabase';
-
-// export function useBlogs() {
-//   // const { blogId } = useParams();
-//   const supabase = useSupabase();
-
-//   console.log('useBlogs - supabase client:', supabase);
-//   console.log('useBlogs - has .from?', typeof supabase?.from);
-
-//   const { isLoading, data, error } = useQuery({
-//     queryKey: ['blogs'],
-//     queryFn: () => getBlogs(supabase),
-//     retry: false,
-//   });
-
-//   const blogs = data?.data || [];
-//   const count = data?.count || 0;
-
-//   return { isLoading, error, blogs, count };
-// }
-
-// test version
-
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { getBlogs } from '../../services/apiBlogs';
 import supabase from '../../services/supabase';
+import { PAGE_SIZE } from '../../utils/constants';
 
 export function useBlogs() {
+  const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
+
+  // ✅ Extract parameters exactly as your components set them
+  const filterValue = searchParams.get('status') || 'all';
+  const sortBy = searchParams.get('sortBy') || 'created_at-newest';
+  const page = !searchParams.get('page') ? 1 : Number(searchParams.get('page'));
+
   const {
     isLoading,
     data: { data: blogs, count } = {},
     error,
   } = useQuery({
-    queryKey: ['blogs'],
-    queryFn: () => getBlogs(supabase),
+    queryKey: ['blogs', filterValue, sortBy, page], // ✅ This should trigger refetch on filter/sort change
+    queryFn: () => {
+      return getBlogs(supabase, {
+        filter: filterValue,
+        sortBy,
+        page,
+      });
+    },
+    retry: false,
   });
 
-  return { isLoading, error, blogs, count };
+  const pageCount = Math.ceil((count || 0) / PAGE_SIZE);
+
+  // Prefetching logic...
+  if (!isLoading && count > 0) {
+    if (page < pageCount) {
+      queryClient.prefetchQuery({
+        queryKey: ['blogs', filterValue, sortBy, page + 1],
+        queryFn: () =>
+          getBlogs(supabase, {
+            filter: filterValue,
+            sortBy,
+            page: page + 1,
+          }),
+      });
+    }
+
+    if (page > 1) {
+      queryClient.prefetchQuery({
+        queryKey: ['blogs', filterValue, sortBy, page - 1],
+        queryFn: () =>
+          getBlogs(supabase, {
+            filter: filterValue,
+            sortBy,
+            page: page - 1,
+          }),
+      });
+    }
+  }
+
+  return {
+    isLoading,
+    error,
+    blogs: blogs || [],
+    count: count || 0,
+  };
 }

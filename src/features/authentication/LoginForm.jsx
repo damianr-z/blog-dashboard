@@ -47,7 +47,7 @@ function LoginForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!signInLoaded || !email || !password) return;
-
+    
     setIsLoading(true);
 
     try {
