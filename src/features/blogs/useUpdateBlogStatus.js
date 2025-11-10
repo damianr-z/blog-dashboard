@@ -12,7 +12,7 @@ export function useUpdateBlogStatus() {
     mutationFn: ({ status }) => updateBlogStatusApi(supabase, blogId, status),
     onSuccess: (data, variables) => {
       let message;
-      switch (variables.status) {
+      switch (variables.status?.toLowerCase()) {
         case 'draft':
           message = `Blog #${blogId} was successfully moved to draft`;
           break;
@@ -26,6 +26,7 @@ export function useUpdateBlogStatus() {
           message = `Blog #${blogId} status was successfully updated`;
       }
       toast.success(message);
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
       queryClient.invalidateQueries({ queryKey: ['blog', blogId] });
     },
     onError: () =>

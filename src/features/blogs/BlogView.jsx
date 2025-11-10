@@ -8,12 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { useMoveBack } from '../../hooks/useMoveBack';
 import { useBlog } from './useBlog';
 import Spinner from '../../ui/Spinner';
-// import { usePublish } from './usePublish';
-// import { useDraft } from './useDraft';
-// import { useArchive } from './useArchive';
 import { useUpdateBlogStatus } from './useUpdateBlogStatus';
 import { useDeleteBlog } from './useDeleteBlog';
-import { HiArrowUpOnSquare, HiTrash } from 'react-icons/hi2';
+import { HiTrash, HiArchiveBox } from 'react-icons/hi2';
+import { GrDocumentTransfer } from 'react-icons/gr';
+import { IoDocumentTextOutline } from 'react-icons/io5';
 import { FiEdit } from 'react-icons/fi';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Menus from '../../ui/Menus';
@@ -39,13 +38,11 @@ function BlogView() {
 
   if (isLoading) return <Spinner />;
 
-
   function handleUpdateStatus(newStatus) {
     updateBlogStatus({ status: newStatus });
   }
 
   function getStatusActions() {
-
     const actions = (() => {
       switch (status) {
         case 'draft':
@@ -88,10 +85,6 @@ function BlogView() {
             },
           ];
         default:
-          console.log(
-            '🚨 getStatusActions - default case hit, status:',
-            status
-          );
           return [];
       }
     })();
@@ -125,6 +118,15 @@ function BlogView() {
                   {getStatusActions().map((item) => (
                     <Menus.Button
                       key={item.label}
+                      icon={
+                        item.label === 'Publish' ? (
+                          <IoDocumentTextOutline />
+                        ) : item.label === 'Archive' ? (
+                          <HiArchiveBox />
+                        ) : item.label === 'Draft' ? (
+                          <GrDocumentTransfer />
+                        ) : null
+                      }
                       onClick={item.action}
                       disabled={item.disabled}
                     >
