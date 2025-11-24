@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSignIn, useAuth } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -39,15 +39,10 @@ function LoginForm() {
   //   login({ email, password });
   // }
 
-  if (authLoaded && isSignedIn) {
-    navigate('/blogs', { replace: true });
-    return null; // Don't render the form
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
     if (!signInLoaded || !email || !password) return;
-    
+
     setIsLoading(true);
 
     try {
@@ -80,6 +75,11 @@ function LoginForm() {
       setIsLoading(false);
       setEmail('');
       setPassword('');
+    }
+
+    if (authLoaded && isSignedIn) {
+      navigate('/blogs', { replace: true });
+      return null; // Don't render the form
     }
   }
 

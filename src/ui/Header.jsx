@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-// import Logo from './Logo';
+import Button from './Button';
+import Row from './Row';
+import { useLogOut } from '../features/authentication/useLogOut';
+import SpinnerMini from './SpinnerMini';
 
 const StyledHeader = styled.header`
   background-color: var(--c-black-100);
@@ -17,10 +20,20 @@ const StyledLogo = styled.h1`
 `;
 
 function Header() {
+  const { handleLogOut, isLoading } = useLogOut();
   return (
     <StyledHeader>
       {/* <Logo type={'small'} /> */}
-      <StyledLogo>Blog Dashboard</StyledLogo>
+      <Row type={'horizontal'}>
+        <StyledLogo>Blog Dashboard</StyledLogo>
+        {!isLoading ? (
+          <Button variation={'secondary'} size={'small'} onClick={handleLogOut}>
+            Log Out
+          </Button>
+        ) : (
+          <SpinnerMini />
+        )}
+      </Row>
     </StyledHeader>
   );
 }
