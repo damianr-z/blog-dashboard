@@ -7,7 +7,7 @@ const LoginLayout = styled.main`
   min-height: 100vh;
   display: grid;
   grid-template-columns: 48rem;
-  align-content: center;
+  align-content: start;
   justify-content: center;
   gap: 3.2rem;
   background-color: var(--c-grey-100);
@@ -16,7 +16,7 @@ const LoginLayout = styled.main`
 function Login() {
   return (
     <LoginLayout>
-      <Heading as="h4">Login to your account right now</Heading>
+      <Heading as="h3">Log in to your account</Heading>
       <LoginForm />
     </LoginLayout>
   );

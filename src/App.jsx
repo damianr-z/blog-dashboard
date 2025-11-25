@@ -11,6 +11,7 @@ import Users from './Pages/Users';
 import Settings from './Pages/Settings';
 import Account from './Pages/Account';
 import Login from './Pages/Login';
+import Register from './pages/Register';
 import PageNotFound from './Pages/PageNotFound';
 import Layout from './ui/Layout';
 import Spinner from './ui/Spinner';
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="account" element={<Account />} />
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
