@@ -13,11 +13,11 @@ export function useLogOut() {
     setIsLoading(true);
 
     try {
-      await signOut();
-
       toast.success('Successfully logged out!', { duration: 2000 });
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      await signOut();
 
       navigate('/login', { replace: true });
     } catch (error) {

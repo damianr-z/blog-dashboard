@@ -15,11 +15,14 @@ const FullPage = styled.div`
 export default function ProtectedRoute({ children }) {
   const { isSignedIn, isLoaded } = useAuth();
 
-  const BYPASS_AUTH = true;
+  const BYPASS_AUTH = import.meta.env.VITE_BYPASS_AUTH === 'true';
 
   if (BYPASS_AUTH) {
+    console.warn('⚠️ AUTH BYPASS ENABLED - FOR DEVELOPMENT ONLY');
     return children;
   }
+
+
   // Wait for Clerk to load
   if (!isLoaded)
     return (
