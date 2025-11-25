@@ -4,7 +4,7 @@ export function useUser() {
   const { isLoaded, isSignedIn, user } = useClerkUser();
 
   return {
-    isLoaded: !isLoaded,
+    isLoading: !isLoaded,
     user: isSignedIn ? user : null,
     isAuthenticated: isSignedIn,
   };
