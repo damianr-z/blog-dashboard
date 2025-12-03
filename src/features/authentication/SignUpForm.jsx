@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../ui/Button';
 import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
 import { useRegister } from './useRegister';
-
 // Email regex: /\S+@\S+\.\S+/
 
 function SignupForm() {
@@ -14,15 +14,19 @@ function SignupForm() {
     getValues,
     handleSubmit,
     reset,
-    label,
   } = useForm();
   const { errors } = formState;
-
   const { register: registerUser, isLoading } = useRegister();
+  const navigate = useNavigate();
 
   async function onSubmit(data) {
     const { name, email, password } = data;
     await registerUser({ name, email, password });
+  }
+
+  function handleCancel() {
+    reset();
+    navigate(-1);
   }
 
   return (
@@ -99,9 +103,9 @@ function SignupForm() {
         {/* type is an HTML attribute! */}
         <Button
           variation="secondary"
-          type="reset"
+          type="button"
           disabled={isLoading}
-          onClick={reset}
+          onClick={handleCancel}
         >
           Cancel
         </Button>

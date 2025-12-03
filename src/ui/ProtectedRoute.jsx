@@ -12,7 +12,7 @@ const FullPage = styled.div`
 `;
 
 // ProtectedRoute component to guard routes that require authentication
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children, url }) {
   const { isSignedIn, isLoaded } = useAuth();
 
   const BYPASS_AUTH = import.meta.env.VITE_BYPASS_AUTH === 'true';
@@ -21,7 +21,6 @@ export default function ProtectedRoute({ children }) {
     console.warn('⚠️ AUTH BYPASS ENABLED - FOR DEVELOPMENT ONLY');
     return children;
   }
-
 
   // Wait for Clerk to load
   if (!isLoaded)
@@ -33,7 +32,7 @@ export default function ProtectedRoute({ children }) {
 
   // Redirect to login if not signed in
   if (!isSignedIn) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={url} replace />;
   }
   // User is authenticated, render the protecte content
   return children;
