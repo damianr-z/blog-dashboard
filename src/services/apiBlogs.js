@@ -92,15 +92,11 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
     const { data: authorData } = await supabaseClient
       .from('author')
       .select('id')
-      .eq('name', newBlog.author.name.trim()) // Remove any extra spaces
+      .eq('name', newBlog.author.name.trim())
       .single();
 
     originalAuthorId = authorData?.id;
-    console.log('🔍 Found author ID by name:', originalAuthorId);
   }
-
-  console.log('🔍 Final originalAuthorId:', originalAuthorId);
-  console.log('🔍 originalAuthorId type:', typeof originalAuthorId);
 
   const {
     author, // Remove populated author object: {"name":"Damian "}
@@ -115,6 +111,7 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
     ...cleanBlogData,
     image: imagePath,
     author: originalAuthorId, // ✅ Use the numeric author ID
+    status: newBlog.status?.toLowerCase() || 'draft',
   };
 
   console.log('🔍 Blog data to insert:', blogDataToInsert);
