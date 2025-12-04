@@ -4,8 +4,6 @@ import { PAGE_SIZE } from '../utils/constants';
 //////////////////// Get all blogs ////////////////////////
 
 export async function getBlogs(supabaseClient, { filter, sortBy, page } = {}) {
-  console.log('🔍 API getBlogs called with:', { filter, sortBy, page });
-
   let query = supabaseClient
     .from('blogs')
     .select('*, author(name)', { count: 'exact' });
@@ -67,21 +65,27 @@ export async function getBlog(supabaseClient, id) {
 
 /////////////////// Create / Edit blog ////////////////////////
 
+const DEFAULT_IMAGE_URL = 'https://via.placeholder.com/800x400?text=No+Image';
+
 export async function createEditBlog(supabaseClient, newBlog, id) {
-  console.log('🔍 Original newBlog:', newBlog);
-  console.log('🔍 newBlog.author:', newBlog.author);
-  console.log('🔍 newBlog.id:', newBlog.id);
-
   const hasImagePath =
-    typeof newBlog.image === 'string' && newBlog.image.startsWith('http');
+    newBlog.image &&
+    typeof newBlog.image === 'string' &&
+    newBlog.image.startsWith('http');
 
-  const imageName = hasImagePath
-    ? ''
-    : `${Math.random()}-${newBlog.image.name}`.replaceAll('/', '');
+  let imagePath = null;
+  let imageName = '';
 
-  const imagePath = hasImagePath
-    ? newBlog.image
-    : `${supabaseUrl}/storage/v1/object/public/posts-images/${imageName}`;
+  if (hasImagePath) {
+    imagePath = newBlog.image;
+  } else if (newBlog.image) {
+    imageName = `${Math.random()}-${newBlog.image.name}`.replaceAll('/', '');
+    imagePath = `${supabaseUrl}/storage/v1/object/public/posts-images/${imageName}`;
+  } else {
+    imagePath = DEFAULT_IMAGE_URL;
+  }
+
+  console.log('🔍 Image handling:', { hasImagePath, imageName, imagePath });
 
   // ✅ Get author ID by searching for author by name
   let originalAuthorId = null;
@@ -130,8 +134,9 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
   }
 
   // if the image is already a url, return the data
-  if (hasImagePath) return data;
+  if (hasImagePath || !newBlog.image) return data;
 
+  // Upload image to storage
   const { error: storageError } = await supabaseClient.storage
     .from('posts-images')
     .upload(imageName, newBlog.image);
@@ -141,7 +146,7 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
     console.log(storageError);
     throw new Error('image could not be uploaded');
   }
-
+  console.log('✅ Blog and image created successfully');
   return data;
 }
 

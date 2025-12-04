@@ -13,11 +13,13 @@ import FormRow from '../../ui/FormRow';
 
 import { useCreateBlog } from './useCreateBlog';
 import { useEditBlog } from './useEditBlog';
+import { useNavigate } from 'react-router-dom';
 
 function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
   const { isCreating, createBlog } = useCreateBlog();
   const { isEditing, editBlog } = useEditBlog();
   const isWorking = isCreating || isEditing;
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
@@ -30,7 +32,8 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
   const { errors } = formState;
 
   function onSubmit(data) {
-    const image = typeof data.image === 'string' ? data.image : data.image[0];
+    const image =
+      typeof data.image === 'string' ? data.image : data.image[0] || null;
 
     if (isEditSession)
       editBlog(
@@ -39,6 +42,7 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
           onSuccess: (data) => {
             reset();
             onCloseModal?.();
+            navigate('/blogs');
           },
         }
       );
@@ -49,13 +53,14 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
           onSuccess: (data) => {
             reset();
             onCloseModal?.();
+            navigate('/blogs');
           },
         }
       );
   }
 
   function onError(errors) {
-    // console.log(errors);
+    console.log(errors);
   }
 
   return (
@@ -113,7 +118,7 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
           id="image"
           accept="image/*"
           {...register('image', {
-            required: isEditSession ? false : 'This field is required',
+            required: false,
           })}
         />
       </FormRow>
@@ -122,7 +127,10 @@ function CreateBlogForm({ blogToEdit = {}, onCloseModal }) {
         <Button
           variation="secondary"
           type="reset"
-          onClick={() => onCloseModal?.()}
+          onClick={() => {
+            onCloseModal?.();
+            navigate('/blogs');
+          }}
         >
           Cancel
         </Button>
