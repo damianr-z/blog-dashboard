@@ -4,15 +4,15 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './ui/ProtectedRoute';
 
-import Dashboard from './Pages/Dashboard';
-import Blogs from './Pages/Blogs';
-import Blog from './Pages/Blog';
-import Users from './Pages/Users';
-import Settings from './Pages/Settings';
-import Account from './Pages/Account';
-import Login from './Pages/Login';
-import Register from './Pages/Register';
-import PageNotFound from './Pages/PageNotFound';
+import Dashboard from './pages/Dashboard';
+import Blogs from './pages/Blogs';
+import Blog from './pages/Blog';
+import Users from './pages/Users';
+import Settings from './pages/Settings';
+import Account from './pages/Account';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import PageNotFound from './pages/PageNotFound';
 import Layout from './ui/Layout';
 import Spinner from './ui/Spinner';
 

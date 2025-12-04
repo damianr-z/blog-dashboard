@@ -1,12 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { getBlogs } from '../../services/apiBlogs';
-import supabase from '../../services/supabase';
+import { useSupabase } from '../../hooks/useSupabase';
 import { PAGE_SIZE } from '../../utils/constants';
 
 export function useBlogs() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
+  const supabase = useSupabase();
 
   // ✅ Extract parameters exactly as your components set them
   const filterValue = searchParams.get('status') || 'all';

@@ -1,4 +1,4 @@
-import supabase, { supabaseUrl } from './supabase';
+import { supabaseUrl } from './supabase';
 import { PAGE_SIZE } from '../utils/constants';
 
 //////////////////// Get all blogs ////////////////////////
@@ -42,6 +42,8 @@ export async function getBlogs(supabaseClient, { filter, sortBy, page } = {}) {
   console.log('✅ Query successful:', {
     dataCount: data?.length,
     totalCount: count,
+    firstBlog: data?.[0],
+    firstBlogAuthor: data?.[0]?.author, // ✅ Add this
   });
   return { data, count };
 }

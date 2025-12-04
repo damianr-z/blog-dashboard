@@ -2,11 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateBlogStatus as updateBlogStatusApi } from '../../services/apiBlogs';
 import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-import supabase from '../../services/supabase';
+import { useSupabase } from '../../hooks/useSupabase';
 
 export function useUpdateBlogStatus() {
   const { blogId } = useParams();
   const queryClient = useQueryClient();
+  const supabase = useSupabase();
 
   const { mutate: updateBlogStatus, isLoading: isUpdating } = useMutation({
     mutationFn: ({ status }) => updateBlogStatusApi(supabase, blogId, status),

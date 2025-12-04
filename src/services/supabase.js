@@ -1,32 +1,27 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Default Supabase client for public/unauthenticated requests
 export const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-export const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Single global instance
+let supabaseClient = null;
 
-// Helper function to create authenticated Supabase client with Clerk JWT
 export function createClerkSupabaseClient(getToken) {
-  const client = createClient(supabaseUrl, supabaseKey, {
-    global: {
-      fetch: async (url, options = {}) => {
-        const clerkToken = await getToken({ template: 'supabase' });
-
-        const headers = new Headers(options?.headers);
-        if (clerkToken) {
-          headers.set('Authorization', `Bearer ${clerkToken}`);
-        }
-
-        return fetch(url, {
-          ...options,
-          headers,
-        });
+  // Create only once
+  if (!supabaseClient) {
+    supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        headers: async () => {
+          const token = await getToken({ template: 'supabase' });
+          return token ? { Authorization: `Bearer ${token}` } : {};
+        },
       },
-    },
-  });
+    });
+  }
 
-  return client;
+  return supabaseClient;
 }
 
+// For backward compatibility
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export default supabase;

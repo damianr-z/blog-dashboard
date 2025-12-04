@@ -32,11 +32,6 @@ export function useLogin() {
     } finally {
       setIsLoading(false);
     }
-
-    if (useAuth && isSignedIn) {
-      navigate('/blogs', { replace: true });
-      return null; // Don't render the form
-    }
   };
 
   return { login, isLoading };
