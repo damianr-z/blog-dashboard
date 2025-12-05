@@ -1,7 +1,11 @@
-import React from 'react'
+import Heading from "../ui/Heading";
 
-export default function Account() {
+function Account() {
   return (
-    <div>Account</div>
-  )
+    <>
+      <Heading as="h1">Update your account</Heading>
+    </>
+  );
 }
+
+export default Account;

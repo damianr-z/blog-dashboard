@@ -4,8 +4,7 @@ import SideNav from './SideNav';
 const StyledSidebar = styled.aside`
   background-color: var(--c-black-200);
   padding: 3.2rem 2.4rem;
-  border-right: 1px solid var(--c-grey-500);
-  grid-column: 2 / -1;
+  grid-column: 1 / 2;
   display: flex;
   flex-direction: column;
   gap: 3.2rem;

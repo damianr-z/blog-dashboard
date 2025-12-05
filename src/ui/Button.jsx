@@ -52,10 +52,26 @@ const variations = {
     color: var(--c-white-200);
     background: none;
     transition: color 0.3s;
+    padding: 0.6rem;
     &:hover,
     &:focus,
     &:active {
-      color: var(--c-white-500);
+      background-color: var(--c-blue-600);
+    }
+    & svg {
+      width: 2.2rem;
+      height: 2.2rem;
+      color: var(--color-brand-600);
+    }
+  `,
+  icon: css`
+    background: none;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: var(--color-grey-100);
     }
   `,
 };

@@ -19,7 +19,7 @@ const StyledNavLink = styled(NavLink)`
   &:visited {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding: 1.2rem;
     margin: 1rem;
     gap: 1rem;
@@ -65,26 +65,26 @@ function SideNav() {
       <NavList>
         <li>
           <StyledNavLink to="/" end>
-            <span>Home</span>
             <HiOutlineHome />
+            <span>Home</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/blogs">
-            <span>Blogs</span>
             <HiFolderOpen />
+            <span>Blogs</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/users">
-            <span>Users</span>
             <HiOutlineUsers />
+            <span>Users</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/settings">
-            <span>Settings</span>
             <HiOutlineCog6Tooth />
+            <span>Settings</span>
           </StyledNavLink>
         </li>
       </NavList>
