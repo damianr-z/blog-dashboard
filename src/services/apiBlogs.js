@@ -66,7 +66,32 @@ export async function getBlog(supabaseClient, id) {
 
 /////////////////// Create / Edit blog ////////////////////////
 
-export async function createEditBlog(supabaseClient, newBlog, id) {
+export async function createEditBlog(supabaseClient, newBlog, id, clerkUser) {
+  if (clerkUser) {
+    const { error: authorError } = await supabaseClient.from('author').upsert(
+      {
+        user_id: clerkUser.id,
+        name: `${clerkUser.firstName} ${clerkUser.lastName}`.trim(),
+        email: clerkUser.primaryEmailAddress?.emailAddress,
+      },
+      { onConflict: 'user_id' }
+    );
+
+    if (authorError) throw new Error(authorError.message);
+  }
+
+  let authorId = null;
+
+  if (clerkUser) {
+    const { data: authorData } = await supabaseClient
+      .from('author')
+      .select('id')
+      .eq('user_id', clerkUser.id)
+      .single();
+
+    authorId = authorData?.id;
+  }
+
   const hasImagePath =
     newBlog.image &&
     typeof newBlog.image === 'string' &&
@@ -114,7 +139,7 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
   const blogDataToInsert = {
     ...cleanBlogData,
     image: imagePath,
-    author: originalAuthorId, // ✅ Use the numeric author ID
+    author: authorId, // ✅ Using clerk user's author ID
     status: newBlog.status?.toLowerCase() || 'draft',
   };
 

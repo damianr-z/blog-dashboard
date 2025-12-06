@@ -51,11 +51,6 @@ function BlogRow({ blog }) {
     });
   }
 
-  // function featuredContent() {
-  //   if (body.length < 100) return body;
-  //   let truncated = body.slice(0, 90);
-  //   return truncated.slice(0, truncated.lastIndexOf(' ')) + '...';
-  // }
 
   return (
     <Table.Row>
