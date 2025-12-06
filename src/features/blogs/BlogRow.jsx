@@ -10,6 +10,7 @@ import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
 import Modal from '../../ui/Modal';
 import StatusTag from '../../ui/StatusTag';
+import { DEFAULT_IMAGE_URL } from '../../utils/constants';
 
 const Img = styled.img`
   display: block;
@@ -18,6 +19,8 @@ const Img = styled.img`
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
+   background-color: #374151;
+   fill: green;
   transform: scale(1.5) translateX(-7px);
 `;
 
@@ -56,7 +59,7 @@ function BlogRow({ blog }) {
 
   return (
     <Table.Row>
-      <Img src={image} />
+      <Img src={image || DEFAULT_IMAGE_URL} />
       <div>{title}</div>
       <div>{authorName}</div>
       <div>{categories}</div>

@@ -1,5 +1,6 @@
 import { supabaseUrl } from './supabase';
 import { PAGE_SIZE } from '../utils/constants';
+import { DEFAULT_IMAGE_URL } from '../utils/constants';
 
 //////////////////// Get all blogs ////////////////////////
 
@@ -65,13 +66,11 @@ export async function getBlog(supabaseClient, id) {
 
 /////////////////// Create / Edit blog ////////////////////////
 
-const DEFAULT_IMAGE_URL = 'https://via.placeholder.com/800x400?text=No+Image';
-
 export async function createEditBlog(supabaseClient, newBlog, id) {
   const hasImagePath =
     newBlog.image &&
     typeof newBlog.image === 'string' &&
-    newBlog.image.startsWith('http');
+    (newBlog.image.startsWith('http') || newBlog.image.startsWith('/'));
 
   let imagePath = null;
   let imageName = '';
@@ -82,6 +81,7 @@ export async function createEditBlog(supabaseClient, newBlog, id) {
     imageName = `${Math.random()}-${newBlog.image.name}`.replaceAll('/', '');
     imagePath = `${supabaseUrl}/storage/v1/object/public/posts-images/${imageName}`;
   } else {
+    imageName = '';
     imagePath = DEFAULT_IMAGE_URL;
   }
 
