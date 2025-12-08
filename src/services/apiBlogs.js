@@ -194,16 +194,37 @@ export async function updateBlogStatus(supabaseClient, id, status) {
 
 /////////////////// Delete blog ////////////////////////
 
-export async function deleteBlog(supabaseClient, id) {
-  const { data, error, count } = await supabaseClient
+export async function deleteBlog(supabaseClient, id, clerkUser) {
+  // get the blog data
+  const { data: blog } = await supabaseClient
     .from('blogs')
-    .delete()
-    .eq('id', id);
+    .select("author")
+    .eq('id', id)
+    .single();
+
+  // get the current user's author id
+  const { data: authorData } = await supabaseClient
+    .from('author')
+    .select('id')
+    .eq('user_id', clerkUser.id)
+    .single();
+
+  //check ownership
+  if (blog.author !== authorData.id) {
+    throw new Error('You can only delete your own blogs');
+  }
+
+
+  //delete blog
+  const {data, error} = await supabaseClient
+  .from('blogs')
+  .delete()
+  .eq("id", id); 
 
   if (error) {
     console.log(error);
     throw new Error('blog could not be deleted');
   }
 
-  return { data, count };
+  return { data };
 }
