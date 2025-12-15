@@ -19,6 +19,8 @@ A modern, full-featured blog management dashboard built with React and Vite. Thi
   - [📦 Prerequisites](#-prerequisites)
   - [🚀 Installation](#-installation)
   - [🔐 Environment Variables](#-environment-variables)
+  - [🗄 Database Setup](#-database-setup)
+  - [🔑 Authentication Configuration](#-authentication-configuration)
 
 ## ✨ Features
 
@@ -78,11 +80,10 @@ You'll also need accounts for:
 
 1. **Clone the repository**
 
-   ````bash
+   ```bash
    git clone https://github.com/damianroiz/atrium-blog-dashboard.git
-   cd atrium-blog-dashboard```
-
-   ````
+   cd atrium-blog-dashboard
+   ```
 
 2. **Install Depnedancies**
    `npm install`
@@ -110,10 +111,119 @@ You'll also need accounts for:
 
 Crate a `.env` file in the root directoty with the following variables
 
-````# Supabase Configuration
+```# Supabase Configuration
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_KEY=your_supabase_anon_key
 
 # Clerk Configuration
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+```
+
+Where to Find These Values:
+
+| Variable                   | Location                                                             |     |     |     |
+| -------------------------- | -------------------------------------------------------------------- | --- | --- | --- | --- |
+| VITE_SUPABASE_URL          | Supabase Dashboard → Settings → API → Project URL                    |     |     |     |
+| VITE_SUPABASE_KEY          | Supabase Dashboard → Settings → API → Project API keys → anon public |     |     |     |
+| VITE_CLERK_PUBLISHABLE_KEY | Clerk Dashboard → API Keys → Publishable key                         |     |     |     |     |
+
+## 🗄 Database Setup
+
+1. Create Tables in Supabase
+   Run the following SQL in your Supabase SQL Editor:
+
+```
+-- Create author table
+CREATE TABLE author (
+  id BIGSERIAL PRIMARY KEY,
+  user_id TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  email TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
+);
+
+-- Create blogs table
+CREATE TABLE blogs (
+  id BIGSERIAL PRIMARY KEY,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
+  title TEXT NOT NULL,
+  author BIGINT REFERENCES author(id) ON DELETE CASCADE,
+  content TEXT,
+  image TEXT,
+  categories TEXT,
+  status TEXT DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'archived'))
+);
+
+-- Create indexes for better performance
+CREATE INDEX idx_blogs_author ON blogs(author);
+CREATE INDEX idx_blogs_status ON blogs(status);
+CREATE INDEX idx_author_user_id ON author(user_id);
+```
+
+2. Enable Row Level Security (RLS)
+
+```
+-- Enable RLS on both tables
+ALTER TABLE author ENABLE ROW LEVEL SECURITY;
+ALTER TABLE blogs ENABLE ROW LEVEL SECURITY;
+
+-- Author table policies
+CREATE POLICY "author_select_authenticated" ON author
+FOR SELECT TO authenticated USING (true);
+
+CREATE POLICY "author_insert_authenticated" ON author
+FOR INSERT TO authenticated WITH CHECK (true);
+
+-- Blogs table policies
+CREATE POLICY "blogs_select_authenticated" ON blogs
+FOR SELECT TO authenticated USING (true);
+
+CREATE POLICY "blogs_insert_authenticated" ON blogs
+FOR INSERT TO authenticated WITH CHECK (true);
+
+CREATE POLICY "blogs_update_authenticated" ON blogs
+FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+
+CREATE POLICY "blogs_delete_authenticated" ON blogs
+FOR DELETE TO authenticated USING (true);
+```
+
+Note: Due to Supabase free tier limitations, complex ownership validation using JWT claims is not available. Ownership validation is enforced at the application level.
+
+## 🔑 Authentication Configuration
+
+Setting up Clerk + Supabase Integration
+
+1. In Clerk Dashboard:
+   - Go to JWT Templates
+   - Create a new template named supabase
+   - Add the following claims:
+
+```
+{
+  "iss": "https://your-clerk-domain.clerk.accounts.dev",
+  "sub": "{{user.id}}",
+  "email": "{{user.primary_email_address}}",
+  "role": "authenticated"
+}
+```
+
+- Save the template
+
+2. Application Integration:
+   The application uses a custom Supabase client that includes the Clerk token:
+
+````
+// src/services/supabase.js
+export function createClerkSupabaseClient(getToken) {
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    global: {
+      headers: async () => {
+        const token = await getToken({ template: 'supabase' });
+        return token ? { Authorization: `Bearer ${token}` } : {};
+      },
+    },
+  });
+}```
+
 ````
