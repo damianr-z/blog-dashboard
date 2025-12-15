@@ -1,20 +1,60 @@
-// import supabase from './supabase';
+export async function getCurrentUser(clerkUser) {
+  if (!clerkUser) return null;
+  return clerkUser;
+}
 
-// export async function signup({ fullName, email, password }) {
-//   const { data, error } = await supabase.auth.signUp({ email, password });
+export async function updateCurrentUser({
+  clerkUser,
+  firstName,
+  lastName,
+  avatar,
+}) {
+  if (!clerkUser) {
+    throw new Error('No user logged in');
+  }
 
-//   if (error) throw new Error(error.message);
+  try {
+    // Update Clerk user profile (firstName, lastName)
+    const updates = {};
 
-//   return data;
-// }
+    if (firstName !== undefined) updates.firstName = firstName;
+    if (lastName !== undefined) updates.lastName = lastName;
 
-// export async function login({ email, password }) {
-//   const { data, error } = await supabase.auth.signInWithPassword({
-//     email,
-//     password,
-//   });
+    if (Object.keys(updates).length > 0) {
+      await clerkUser.update(updates);
+    }
 
-//   if (error) throw new Error(error.message);
-//   console.log('login - data:', data);
-//   return data;
-// }
+    // Update avatar if provided (File object)
+    if (avatar) {
+      await clerkUser.setProfileImage({ file: avatar });
+    }
+
+    // Reload user data to get latest updates
+    await clerkUser.reload();
+
+    return clerkUser;
+  } catch (error) {
+    throw new Error(error.message || 'Failed to update user');
+  }
+}
+
+export async function updateAuthorInSupabase(
+  supabaseClient,
+  clerkUser,
+  updates
+) {
+  const { data, error } = await supabaseClient
+    .from('author')
+    .update({
+      name:
+        updates.fullName ||
+        `${clerkUser.firstName} ${clerkUser.lastName}`.trim(),
+    })
+    .eq('user_id', clerkUser.id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
