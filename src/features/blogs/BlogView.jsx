@@ -9,6 +9,7 @@ import { useMoveBack } from '../../hooks/useMoveBack';
 import { useBlog } from './useBlog';
 import Spinner from '../../ui/Spinner';
 import { useUpdateBlogStatus } from './useUpdateBlogStatus';
+import { useConfirmAuthorId } from './useConfirmAuthorId';
 import { useDeleteBlog } from './useDeleteBlog';
 import { HiTrash, HiArchiveBox } from 'react-icons/hi2';
 import { GrDocumentTransfer } from 'react-icons/gr';
@@ -30,6 +31,9 @@ function BlogView() {
   const { blog, isLoading } = useBlog();
   const { deleteBlog, isDeleting } = useDeleteBlog();
   const { updateBlogStatus, isUpdating } = useUpdateBlogStatus();
+  const { isOwner, handleDelete } = useConfirmAuthorId({
+    author: blog?.author,
+  });
 
   const { status, id: blogId } = blog || {};
 
@@ -116,7 +120,7 @@ function BlogView() {
                 <Menus.Toggle xPos={60} yPos={10} />
                 <Menus.List>
                   {getStatusActions().map((item) => (
-                    <Menus.Button
+                    <Menus.ListItem
                       key={item.label}
                       icon={
                         item.label === 'Publish' ? (
@@ -131,12 +135,18 @@ function BlogView() {
                       disabled={item.disabled}
                     >
                       {item.label}
-                    </Menus.Button>
+                    </Menus.ListItem>
                   ))}
 
-                  <Modal.Open opens="delete">
-                    <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-                  </Modal.Open>
+                  {isOwner ? (
+                    <Modal.Open opens="delete">
+                      <Menus.ListItem icon={<HiTrash />}>Delete</Menus.ListItem>
+                    </Modal.Open>
+                  ) : (
+                    <Menus.ListItem icon={<HiTrash />} onClick={handleDelete}>
+                      Delete
+                    </Menus.ListItem>
+                  )}
                 </Menus.List>
               </Menus.Menu>
               <Modal.Window name="delete">

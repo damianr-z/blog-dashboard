@@ -4,6 +4,8 @@ import CreateBlogForm from './CreateBlogForm';
 import { useNavigate } from 'react-router-dom';
 import { useCreateBlog } from './useCreateBlog';
 import { useDeleteBlog } from './useDeleteBlog';
+import { useConfirmAuthorId } from './useConfirmAuthorId';
+
 import { HiPencil, HiSquare2Stack, HiTrash, HiEye } from 'react-icons/hi2';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Menus from '../../ui/Menus';
@@ -19,14 +21,15 @@ const Img = styled.img`
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
-   background-color: #374151;
-   fill: green;
+  background-color: #374151;
+  fill: green;
   transform: scale(1.5) translateX(-7px);
 `;
 
 function BlogRow({ blog }) {
   const { isDeleting, deleteBlog } = useDeleteBlog();
   const { isCreating, createBlog } = useCreateBlog();
+  const { isOwner, handleDelete } = useConfirmAuthorId({ author: blog.author });
 
   const {
     image,
@@ -51,7 +54,6 @@ function BlogRow({ blog }) {
     });
   }
 
-
   return (
     <Table.Row>
       <Img src={image || DEFAULT_IMAGE_URL} />
@@ -66,9 +68,9 @@ function BlogRow({ blog }) {
       <div>
         <Modal>
           <Menus.Menu>
-            <Menus.Toggle id={blogId} xPos={215} yPos={-60} />
+            <Menus.Toggle id={blogId} xPos={60} yPos={-110} />
             <Menus.List id={blogId}>
-              <Menus.Button
+              <Menus.ListItem
                 icon={<HiEye />}
                 onClick={() => {
                   console.log('viewing blog', blogId);
@@ -76,19 +78,28 @@ function BlogRow({ blog }) {
                 }}
               >
                 View
-              </Menus.Button>
+              </Menus.ListItem>
 
-              <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
+              <Menus.ListItem
+                icon={<HiSquare2Stack />}
+                onClick={handleDuplicate}
+              >
                 Duplicate
-              </Menus.Button>
+              </Menus.ListItem>
 
               <Modal.Open opens="edit">
-                <Menus.Button icon={<HiPencil />}>Quick Edit</Menus.Button>
+                <Menus.ListItem icon={<HiPencil />}>Quick Edit</Menus.ListItem>
               </Modal.Open>
 
-              <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-              </Modal.Open>
+              {isOwner ? (
+                <Modal.Open opens="delete">
+                  <Menus.ListItem icon={<HiTrash />}>Delete</Menus.ListItem>
+                </Modal.Open>
+              ) : (
+                <Menus.ListItem icon={<HiTrash />} onClick={handleDelete}>
+                  Delete
+                </Menus.ListItem>
+              )}
             </Menus.List>
 
             <Modal.Window name="edit" type="large">

@@ -19,39 +19,60 @@ const StyledToggle = styled.button`
     transform; translateX(0-.8rem);
     transition: all 0.2s;
     cursor: pointer;
-
+    
     &:hover {
-        background-color: var(--c-blue-600);
+      background-color: var(--c-blue-600);
     }
     & svg {
-        width: 2.4rem;
-        height: 2.4rem;
-        color: var(--c-blue-50);
+      width: 2.4rem;
+      height: 2.4rem;
+      color: var(--c-blue-50);
     }
-`;
+    
+    `;
 
 const StyledList = styled.ul`
   position: fixed;
-  background-color: var(--c-grey-100);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-sm);
   right: ${(props) => props.position.x}px;
   top: ${(props) => props.position.y}px;
-`;
+  position-achor: --profile-button;
+  position-try-fallbacks: --bottom;
+  transition: display 1s, opacity 1s;
+  transition-behavior: allow-discrete;
+  
+  @starting-style {
+    opacity; 0;
+  }
+  
+  @position-try --bottom {
+    inset: unset;
+    top: anchor(bottom);
+    right: anchor(right);
+    margin: 0;
+    margin-right: 6px;
+  }
+  `;
+
+const StyledListItem = styled.li`
+  background-color: var(--c-grey-100);
+  `;
 
 const StyledButton = styled.button`
   width: 100%;
   text-align: left;
   background: none;
   border: none;
-  padding: 1.2rem 2.4rem;
-  font-size: var(--fs-16);
-  transtion: all 0.2s;
+  font-size: 12px;
+  padding: 0.6rem 1.2rem;
+  transtion: all 0.2s allow-discrete;
   color: var(--c-white-400);
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 0.8rem;
   cursor: pointer;
+  onchor-name: --profile-button;
 
   &:hover {
     background-color: var(--c-blue-600);
@@ -59,8 +80,8 @@ const StyledButton = styled.button`
   }
 
   & svg {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 1.2rem;
+    height: 1.2rem;
     transition: all 0.3;
   }
 `;
@@ -96,7 +117,7 @@ function Toggle({ id, xPos, yPos }) {
   }
 
   return (
-    <StyledToggle onClick={handleClick}>
+    <StyledToggle popover id="modal-menu" onClick={handleClick}>
       <HiEllipsisVertical />
     </StyledToggle>
   );
@@ -107,14 +128,14 @@ function List({ id, children }) {
   const ref = useOutsideClick(close);
   if (OpenId !== id) return null;
   return createPortal(
-    <StyledList position={position} ref={ref}>
+    <StyledList popovertarget="modal-menu" position={position} ref={ref}>
       {children}
     </StyledList>,
     document.body
   );
 }
 
-function Button({ children, icon, onClick }) {
+function ListItem({ children, icon, onClick }) {
   const { close } = useContext(MenusContext);
   function handleClick() {
     onClick?.();
@@ -122,18 +143,18 @@ function Button({ children, icon, onClick }) {
   }
 
   return (
-    <li>
+    <StyledListItem>
       <StyledButton onClick={handleClick}>
         {icon}
         <span>{children}</span>
       </StyledButton>
-    </li>
+    </StyledListItem>
   );
 }
 
 Menus.Menu = Menu;
 Menus.Toggle = Toggle;
 Menus.List = List;
-Menus.Button = Button;
+Menus.ListItem = ListItem;
 
 export default Menus;

@@ -7,7 +7,7 @@ import { DEFAULT_IMAGE_URL } from '../utils/constants';
 export async function getBlogs(supabaseClient, { filter, sortBy, page } = {}) {
   let query = supabaseClient
     .from('blogs')
-    .select('*, author(name)', { count: 'exact' });
+    .select('*, author(id, name)', { count: 'exact' });
 
   // ✅ Apply filtering - match your Filter component options
   if (filter && filter !== 'all') {
@@ -52,7 +52,7 @@ export async function getBlogs(supabaseClient, { filter, sortBy, page } = {}) {
 export async function getBlog(supabaseClient, id) {
   const { data, error } = await supabaseClient
     .from('blogs')
-    .select('*, author(name)')
+    .select('*, author(id, name)', { count: 'exact' })
     .eq('id', id)
     .single();
 
@@ -198,7 +198,7 @@ export async function deleteBlog(supabaseClient, id, clerkUser) {
   // get the blog data
   const { data: blog } = await supabaseClient
     .from('blogs')
-    .select("author")
+    .select('author')
     .eq('id', id)
     .single();
 
@@ -214,12 +214,11 @@ export async function deleteBlog(supabaseClient, id, clerkUser) {
     throw new Error('You can only delete your own blogs');
   }
 
-
   //delete blog
-  const {data, error} = await supabaseClient
-  .from('blogs')
-  .delete()
-  .eq("id", id); 
+  const { data, error } = await supabaseClient
+    .from('blogs')
+    .delete()
+    .eq('id', id);
 
   if (error) {
     console.log(error);
