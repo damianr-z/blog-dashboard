@@ -273,6 +273,7 @@ For Readers
 
 ## 📁 Project Structure
 
+```
 atrium-dashboard/
 ├── public/                      # Static assets
 ├── src/
@@ -336,3 +337,4 @@ atrium-dashboard/
 ├── package.json
 ├── README.md
 └── vite.config.js
+```
