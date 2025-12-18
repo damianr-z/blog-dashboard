@@ -21,6 +21,8 @@ A modern, full-featured blog management dashboard built with React and Vite. Thi
   - [🔐 Environment Variables](#-environment-variables)
   - [🗄 Database Setup](#-database-setup)
   - [🔑 Authentication Configuration](#-authentication-configuration)
+  - [📖 Usage](#-usage)
+  - [📁 Project Structure](#-project-structure)
 
 ## ✨ Features
 
@@ -85,25 +87,25 @@ You'll also need accounts for:
    cd atrium-blog-dashboard
    ```
 
-2. **Install Depnedancies**
+2. **Install Dependancies**
    `npm install`
 
-3. **Install Depnedancies**
+3. **Install Dependancies**
    Create a `.env` file in the root directory (see Environment Variables section)
 
-4. Configure Supabase
+4. **Configure Supabase**
 
 - Create a new Supabase project
 - Run the database schema (see Database Setup section)
 - Configure RLS policies
 
-5. Configure Clerk
+5. **Configure Clerk**
 
 - Create a new Clerk application
 - Set up Supabase integration
 - Configure JWT template (see Authentication Configuration)
 
-6. Start the development server
+6. **Start the development server**
    ` npm run dev`
    The Application will be available at http://localhost:3000
 
@@ -121,11 +123,11 @@ VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
 Where to Find These Values:
 
-| Variable                   | Location                                                             |     |     |     |
-| -------------------------- | -------------------------------------------------------------------- | --- | --- | --- | --- |
-| VITE_SUPABASE_URL          | Supabase Dashboard → Settings → API → Project URL                    |     |     |     |
-| VITE_SUPABASE_KEY          | Supabase Dashboard → Settings → API → Project API keys → anon public |     |     |     |
-| VITE_CLERK_PUBLISHABLE_KEY | Clerk Dashboard → API Keys → Publishable key                         |     |     |     |     |
+| Variable | Location |
+|----------|----------|
+| `VITE_SUPABASE_URL` | Supabase Dashboard → Settings → API → Project URL |
+| `VITE_SUPABASE_KEY` | Supabase Dashboard → Settings → API → Project API keys → `anon` `public` |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys → Publishable key |
 
 ## 🗄 Database Setup
 
@@ -188,7 +190,7 @@ CREATE POLICY "blogs_delete_authenticated" ON blogs
 FOR DELETE TO authenticated USING (true);
 ```
 
-Note: Due to Supabase free tier limitations, complex ownership validation using JWT claims is not available. Ownership validation is enforced at the application level.
+**Note:** Due to Supabase free tier limitations, complex ownership validation using JWT claims is not available. Ownership validation is enforced at the application level.
 
 ## 🔑 Authentication Configuration
 
@@ -224,6 +226,113 @@ export function createClerkSupabaseClient(getToken) {
       },
     },
   });
-}```
-
+}
 ````
+
+## 📖 Usage
+
+For authors
+
+**Creating a New Blog Post**
+
+1. Log in with your Clerk credentials
+2. Navigate to the **Blogs** page
+3. Click **"Add New Blog"** button
+4. Fill in the form:
+   - Title (required)
+   - Content (rich text editor)
+   - Category (tags)
+   - Cover image (upload or URL)
+5. Choose to save as **Draft** or **Publish** immediately
+
+**Editing a Blog Post**
+
+1. Click on a blog from your list
+2. Click the **"Quick Edit"** option in the menu
+3. Make your changes
+4. Save
+
+**Managing Blog Status**
+
+- **Draft** → Work in progress, only visible to you
+- **Published** → Live and visible to all users
+- **Archived** → Hidden from public view, can be restored
+
+**Deleting a Blog**
+
+Only **your own blogs** can be deleted
+Click the **Delete** button
+Confirm the action in the modal
+Non-owners will see an error toast if they attempt to delete
+
+For Readers
+- Browse all published blogs
+- View blog details
+- Filter by category or status
+- See author information
+
+## 📁 Project Structure
+
+atrium-dashboard/
+├── public/                      # Static assets
+├── src/
+│   ├── features/                # Feature-based modules
+│   │   ├── authentication/      # Auth components and hooks
+│   │   │   ├── LoginForm.jsx
+│   │   │   ├── SignUpForm.jsx
+│   │   │   ├── UserAvatar.jsx
+│   │   │   ├── useLogin.js
+│   │   │   ├── useLogOut.js
+│   │   │   ├── useRegister.js
+│   │   │   └── useUser.js
+│   │   └── blogs/               # Blog components and hooks
+│   │       ├── AddBlog.jsx
+│   │       ├── BlogContent.jsx
+│   │       ├── BlogRow.jsx
+│   │       ├── BlogTable.jsx
+│   │       ├── BlogView.jsx
+│   │       ├── CreateBlogForm.jsx
+│   │       ├── useBlog.js
+│   │       ├── useBlogs.js
+│   │       ├── useCreateBlog.js
+│   │       ├── useDeleteBlog.js
+│   │       ├── useEditBlog.js
+│   │       ├── useConfirmAuthorId.js
+│   │       └── useUpdateBlogStatus.js
+│   ├── hooks/                   # Custom React hooks
+│   │   ├── useMoveBack.js
+│   │   ├── useOutsideClick.js
+│   │   └── useSupabase.js
+│   ├── pages/                   # Page components
+│   │   ├── Account.jsx
+│   │   ├── Blog.jsx
+│   │   ├── Blogs.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── Settings.jsx
+│   │   └── Users.jsx
+│   ├── services/                # API services
+│   │   ├── apiAuth.js
+│   │   ├── apiBlogs.js
+│   │   └── supabase.js
+│   ├── ui/                      # Reusable UI components
+│   │   ├── Button.jsx
+│   │   ├── ConfirmDelete.jsx
+│   │   ├── Form.jsx
+│   │   ├── Header.jsx
+│   │   ├── Modal.jsx
+│   │   ├── ProtectedRoute.jsx
+│   │   ├── Table.jsx
+│   │   └── ... (more components)
+│   ├── utils/                   # Utility functions
+│   │   └── constants.js
+│   ├── App.jsx                  # Main app component
+│   ├── main.jsx                 # Entry point
+│   └── styles.css               # Global styles
+├── .env                         # Environment variables
+├── .gitignore
+├── index.html
+├── package.json
+├── README.md
+└── vite.config.js
