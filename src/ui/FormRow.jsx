@@ -46,7 +46,7 @@ const StyledFormRow = styled.fieldset`
 `;
 
 const Label = styled.label`
-  /* font-weight: 500;
+  font-weight: 500;
   position: absolute;
   clip: rect(1px, 1px, 1px, 1px);
   padding: 0;
@@ -54,7 +54,7 @@ const Label = styled.label`
   border: 0;
   height: 1px;
   width: 1px;
-  overflow: hidden; */
+  overflow: hidden;
   ${(props) => visibility[props.visibility || 'hidden']}
 `;
 

@@ -38,23 +38,25 @@ export async function updateCurrentUser({
   }
 }
 
-export async function updateAuthorInSupabase(
-  supabaseClient,
-  clerkUser,
-  updates
-) {
+export async function updateAuthorInSupabase(supabaseClient, clerkUser) {
+  const fullName = `${clerkUser.firstName || ''} ${
+    clerkUser.lastName || ''
+  }`.trim();
+
   const { data, error } = await supabaseClient
     .from('author')
     .update({
-      name:
-        updates.fullName ||
-        `${clerkUser.firstName} ${clerkUser.lastName}`.trim(),
+      name: fullName,
+      email: clerkUser.primaryEmailAddress?.emailAddress,
     })
     .eq('user_id', clerkUser.id)
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error('Error updateing author in Supabase', error);
+    throw new Error(error.message);
+  }
 
   return data;
 }

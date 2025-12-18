@@ -4,6 +4,7 @@ import CreateBlogForm from './CreateBlogForm';
 import { useNavigate } from 'react-router-dom';
 import { useCreateBlog } from './useCreateBlog';
 import { useDeleteBlog } from './useDeleteBlog';
+import { useUser } from '../authentication/useUser';
 import { useConfirmAuthorId } from './useConfirmAuthorId';
 
 import { HiPencil, HiSquare2Stack, HiTrash, HiEye } from 'react-icons/hi2';
@@ -30,6 +31,7 @@ function BlogRow({ blog }) {
   const { isDeleting, deleteBlog } = useDeleteBlog();
   const { isCreating, createBlog } = useCreateBlog();
   const { isOwner, handleDelete } = useConfirmAuthorId({ author: blog.author });
+
 
   const {
     image,
