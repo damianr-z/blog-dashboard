@@ -2,19 +2,19 @@ import styled, { css } from 'styled-components';
 
 const sizes = {
   small: css`
-    font-size: var(--fs-16);
-    padding: 1.2rem 1.2rem;
+    font-size: var(--fs-14);
+    padding: 0.6rem 1.2rem;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
   `,
   medium: css`
-    font-size: var(--fs-18);
+    font-size: var(--fs-16);
     padding: 1.2rem 1.6rem;
     font-weight: 500;
   `,
   large: css`
-    font-size: var(--fs-20);
+    font-size: var(--fs-18);
     padding: 1.2rem 2.4rem;
     font-weight: 500;
   `,
@@ -82,13 +82,14 @@ const Button = styled.button`
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 
-  ${(props) => sizes[props.size]}
-  ${(props) => variations[props.variation]}
+  ${(props) => sizes[props.size || 'small']}
+  ${(props) => variations[props.variation || 'primary']}
 `;
 
-Button.defaultProps = {
-  variation: 'primary',
-  size: 'medium',
-};
+// Default props are deprecated in React 18+
+// Button.defaultProps = {
+//   variation: 'primary',
+//   size: 'medium',
+// };
 
 export default Button;

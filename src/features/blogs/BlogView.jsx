@@ -98,22 +98,23 @@ function BlogView() {
 
   return (
     <Row type="horizontal">
-      <Row>
+      <Row type="vertical">
         <BlogContent blog={blog} />
         <Row flexjustify="flexEnd">
           <Button variation="naked" onClick={moveBack}>
-            &larr; Back
+            &larr; back
           </Button>
         </Row>
       </Row>
-      <Row>
+      {/* /////////Side Menu////////////// */}
+      <Row type="vertical">
         <Row flexjustify="flexEnd" type="horizontal">
           <Button variation="naked" onClick={moveBack}>
             &larr; Back
           </Button>
           <StatusTag status={status}>{status}</StatusTag>
         </Row>
-        <Row flexjustify="flexEnd">
+        <Row>
           <Menus>
             <Modal>
               <Menus.Menu>

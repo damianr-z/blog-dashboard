@@ -35,17 +35,16 @@ const StyledHeader = styled(CommonRow)`
 `;
 
 const StyledRow = styled(CommonRow)`
+  background-color: var(--c-grey-300);
   padding: 1.8rem 2.4rem;
   font: var(--fs-20) var(--ff-text);
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--c-grey-100);
-  }
+  border-bottom: 1px solid var(--c-grey-200);
 `;
 
 const StyledBody = styled.section``;
 
 const Footer = styled.footer`
-  background-color: var(--c-grey-700);
+  background-color: var(--c-grey-400);
   display: flex;
   justify-content: center;
   padding: 1.2rem;

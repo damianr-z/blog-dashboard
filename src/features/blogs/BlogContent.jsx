@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Heading from '../../ui/Heading';
 import StatusTag from '../../ui/StatusTag';
 import Empty from '../../ui/Empty';
+import Row from '../../ui/Row';
 
 const HeadingSecction = styled.div`
   display: flex;
@@ -32,15 +33,15 @@ function BlogContent({ blog }) {
   });
 
   return (
-    <>
-      <HeadingSecction>
-        <Heading>{title}</Heading>
-      </HeadingSecction>
+      <Row type="vertical">
+        <HeadingSecction>
+          <Heading>{title}</Heading>
+        </HeadingSecction>
       <StatusTag>#{categories}</StatusTag>
       <div>Author: {author?.name}</div>
       <div>Created on {date}</div>
-      <p>{body}</p>
-    </>
+        <p>{body}</p>
+      </Row>
   );
 }
 

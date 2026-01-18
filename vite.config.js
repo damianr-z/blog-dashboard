@@ -5,12 +5,13 @@ import eslint from 'vite-plugin-eslint';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), eslint()],
-  // server: {
-  //   proxy: {
-  //     "/Blog": {
-  //       target: "http://localhost:4000",
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
+  server: {
+    port: 3000,
+    // proxy: {
+    //   "/Blog": {
+    //     target: "http://localhost:4000",
+    //     changeOrigin: true,
+    //   },
+    // },
+  },
 });

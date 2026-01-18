@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 function LoginForm() {
   const { login, isLoading } = useLogin();
   const [email, setEmail] = useState('damian@example.com');
-  const [password, setPassword] = useState('anothergreatpass1');
+  const [password, setPassword] = useState('Mygreatpass01');
 
   async function handleSubmit(e) {
     e.preventDefault();
