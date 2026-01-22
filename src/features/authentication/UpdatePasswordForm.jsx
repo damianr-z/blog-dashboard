@@ -12,43 +12,39 @@ function UpdatePasswordForm() {
 
   const { updateUser, isUpdating } = useUpdateUser();
 
-  function onSubmit({ password }) {
-    updateUser({ password }, { onSuccess: reset });
+  function onSubmit({ currentPassword, newPassword }) {
+    updateUser({ currentPassword, newPassword }, { onSuccess: () => reset() });
   }
 
   return (
-    // TODO add a field to validate previous password and only then have the new password entered
+    // DONE: add a field to validate previous password and only then have the new password entered
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow
-        label="Enter current password"
-        error={errors?.password?.message}
+        label="Current password"
+        error={errors?.currentPassword?.message}
       >
         <Input
           type="password"
-          id="password"
+          id="currentPassword"
           autoComplete="current-password"
-          placeHolder='enter current password'
+          placeHolder="enter current password"
           disabled={isUpdating}
-          {...register('password', {
+          {...register('currentPassword', {
             required: 'This field is required',
-            minLength: {
-              value: 8,
-              message: 'Password needs a minimum of 8 characters',
-            },
           })}
         />
       </FormRow>
       <FormRow
         label="New password (min 8 chars)"
-        error={errors?.password?.message}
+        error={errors?.newPassword?.message}
       >
         <Input
           type="password"
-          id="password"
+          id="newPassword"
           autoComplete="new-password"
-          placeHolder='enter new password'
+          placeHolder="enter new password"
           disabled={isUpdating}
-          {...register('password', {
+          {...register('newPassword', {
             required: 'This field is required',
             minLength: {
               value: 8,
@@ -60,18 +56,18 @@ function UpdatePasswordForm() {
 
       <FormRow
         label="Confirm new password"
-        error={errors?.passwordConfirm?.message}
+        error={errors?.confirmPassword?.message}
       >
         <Input
           type="password"
           autoComplete="confirmed-password"
-          placeHolder='confirm new password'
-          id="passwordConfirm"
+          placeHolder="confirm new password"
+          id="confirmPassword"
           disabled={isUpdating}
-          {...register('passwordConfirm', {
+          {...register('confirmPassword', {
             required: 'This field is required',
             validate: (value) =>
-              getValues().password === value || 'Passwords need to match',
+              getValues().newPassword === value || 'Passwords need to match',
           })}
         />
       </FormRow>

@@ -23,6 +23,24 @@ A modern, full-featured blog management dashboard built with React and Vite. Thi
   - [🔑 Authentication Configuration](#-authentication-configuration)
   - [📖 Usage](#-usage)
   - [📁 Project Structure](#-project-structure)
+  - [🔄 Data Flow \& State Management](#-data-flow--state-management)
+    - [React Query Architecture](#react-query-architecture)
+    - [Example: Creating a Blog](#example-creating-a-blog)
+  - [🔐 Security Features](#-security-features)
+  - [🚀 Build \& Deployment](#-build--deployment)
+    - [Development Build](#development-build)
+    - [Production Build](#production-build)
+    - [Preview Production Build](#preview-production-build)
+  - [🤝 Contributing](#-contributing)
+  - [📝 Code Style \& Conventions](#-code-style--conventions)
+  - [🐛 Common Issues \& Solutions](#-common-issues--solutions)
+    - [Issue: Clerk Authentication Not Working](#issue-clerk-authentication-not-working)
+    - [Issue: Database Queries Return Empty](#issue-database-queries-return-empty)
+    - [Issue: Image Upload Fails](#issue-image-upload-fails)
+  - [📚 Resources](#-resources)
+  - [� Acknowledgments](#-acknowledgments)
+  - [�📄 License](#-license)
+  - [👤 Author](#-author)
 
 ## ✨ Features
 
@@ -123,11 +141,11 @@ VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
 Where to Find These Values:
 
-| Variable | Location |
-|----------|----------|
-| `VITE_SUPABASE_URL` | Supabase Dashboard → Settings → API → Project URL |
-| `VITE_SUPABASE_KEY` | Supabase Dashboard → Settings → API → Project API keys → `anon` `public` |
-| `VITE_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys → Publishable key |
+| Variable                     | Location                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------ |
+| `VITE_SUPABASE_URL`          | Supabase Dashboard → Settings → API → Project URL                        |
+| `VITE_SUPABASE_KEY`          | Supabase Dashboard → Settings → API → Project API keys → `anon` `public` |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Clerk Dashboard → API Keys → Publishable key                             |
 
 ## 🗄 Database Setup
 
@@ -215,7 +233,7 @@ Setting up Clerk + Supabase Integration
 2. Application Integration:
    The application uses a custom Supabase client that includes the Clerk token:
 
-````
+```
 // src/services/supabase.js
 export function createClerkSupabaseClient(getToken) {
   return createClient(supabaseUrl, supabaseAnonKey, {
@@ -227,7 +245,7 @@ export function createClerkSupabaseClient(getToken) {
     },
   });
 }
-````
+```
 
 ## 📖 Usage
 
@@ -266,6 +284,7 @@ Confirm the action in the modal
 Non-owners will see an error toast if they attempt to delete
 
 For Readers
+
 - Browse all published blogs
 - View blog details
 - Filter by category or status
@@ -281,24 +300,29 @@ atrium-dashboard/
 │   │   ├── authentication/      # Auth components and hooks
 │   │   │   ├── LoginForm.jsx
 │   │   │   ├── SignUpForm.jsx
+│   │   │   ├── UpdatePasswordForm.jsx
+│   │   │   ├── UpdateUserDataForm.jsx
 │   │   │   ├── UserAvatar.jsx
 │   │   │   ├── useLogin.js
 │   │   │   ├── useLogOut.js
 │   │   │   ├── useRegister.js
+│   │   │   ├── useUpdateUser.js
 │   │   │   └── useUser.js
 │   │   └── blogs/               # Blog components and hooks
+│   │       ├── Account.jsx
 │   │       ├── AddBlog.jsx
 │   │       ├── BlogContent.jsx
 │   │       ├── BlogRow.jsx
 │   │       ├── BlogTable.jsx
+│   │       ├── BlogTableOps.jsx
 │   │       ├── BlogView.jsx
 │   │       ├── CreateBlogForm.jsx
 │   │       ├── useBlog.js
 │   │       ├── useBlogs.js
+│   │       ├── useConfirmAuthorId.js
 │   │       ├── useCreateBlog.js
 │   │       ├── useDeleteBlog.js
 │   │       ├── useEditBlog.js
-│   │       ├── useConfirmAuthorId.js
 │   │       └── useUpdateBlogStatus.js
 │   ├── hooks/                   # Custom React hooks
 │   │   ├── useMoveBack.js
@@ -310,31 +334,218 @@ atrium-dashboard/
 │   │   ├── Blogs.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── Login.jsx
+│   │   ├── PageNotFound.jsx
 │   │   ├── Register.jsx
 │   │   ├── Settings.jsx
 │   │   └── Users.jsx
 │   ├── services/                # API services
-│   │   ├── apiAuth.js
-│   │   ├── apiBlogs.js
-│   │   └── supabase.js
+│   │   ├── apiAuth.js           # Clerk & user management
+│   │   ├── apiBlogs.js          # Blog CRUD operations
+│   │   └── supabase.js          # Supabase client setup
 │   ├── ui/                      # Reusable UI components
 │   │   ├── Button.jsx
+│   │   ├── ButtonText.jsx
 │   │   ├── ConfirmDelete.jsx
+│   │   ├── Empty.jsx
+│   │   ├── FileInput.jsx
+│   │   ├── Filter.jsx
 │   │   ├── Form.jsx
+│   │   ├── FormRow.jsx
 │   │   ├── Header.jsx
+│   │   ├── HeaderMenu.jsx
+│   │   ├── Heading.jsx
+│   │   ├── Input.jsx
+│   │   ├── Layout.jsx
+│   │   ├── Logo.jsx
+│   │   ├── Menus.jsx
 │   │   ├── Modal.jsx
+│   │   ├── Pagination.jsx
 │   │   ├── ProtectedRoute.jsx
+│   │   ├── Row.jsx
+│   │   ├── Select.jsx
+│   │   ├── SideBar.jsx
+│   │   ├── SideNav.jsx
+│   │   ├── SortBy.jsx
+│   │   ├── Spinner.jsx
+│   │   ├── SpinnerMini.jsx
+│   │   ├── StatusTag.jsx
 │   │   ├── Table.jsx
-│   │   └── ... (more components)
+│   │   ├── TableOps.jsx
+│   │   └── TextArea.jsx
 │   ├── utils/                   # Utility functions
 │   │   └── constants.js
-│   ├── App.jsx                  # Main app component
+│   ├── App.jsx                  # Main app component with routing
 │   ├── main.jsx                 # Entry point
 │   └── styles.css               # Global styles
-├── .env                         # Environment variables
+├── .github/
+│   └── copilot-instructions.md  # AI assistant guidelines
+├── .env                         # Environment variables (local)
+├── .env.example                 # Environment template
 ├── .gitignore
 ├── index.html
 ├── package.json
+├── package-lock.json
 ├── README.md
 └── vite.config.js
 ```
+
+## 🔄 Data Flow & State Management
+
+### React Query Architecture
+
+This project uses **React Query (TanStack Query)** for server state management:
+
+```
+User Action → Custom Hook (e.g., useBlogs)
+  → React Query Mutation/Query
+    → API Service (apiBlogs.js)
+      → Supabase Client
+        → Database Response
+```
+
+### Example: Creating a Blog
+
+```javascript
+// 1. Component calls mutation
+const { createBlog } = useCreateBlog();
+createBlog(
+  { title, content, image },
+  {
+    onSuccess: () => navigate('/blogs'),
+  },
+);
+
+// 2. Hook uses useMutation
+const { mutate: createBlog } = useMutation({
+  mutationFn: (data) => createBlogAPI(data),
+  onSuccess: () => queryClient.invalidateQueries(['blogs']),
+});
+
+// 3. API layer calls Supabase
+export async function createBlogAPI(data) {
+  const { data: blog, error } = await supabase
+    .from('blogs')
+    .insert([data])
+    .select();
+
+  if (error) throw error;
+  return blog;
+}
+```
+
+## 🔐 Security Features
+
+- **Authentication**: Clerk handles all authentication with JWT tokens
+- **Authorization**: Row Level Security (RLS) in Supabase database
+- **Ownership Verification**: Application-level checks ensure users can only modify their own blogs
+- **Protected Routes**: ProtectedRoute component guards authenticated pages
+- **HTTPS**: All API communication is encrypted
+- **CORS**: Configured to accept requests from trusted domains only
+
+## 🚀 Build & Deployment
+
+### Development Build
+
+```bash
+npm run dev
+```
+
+Starts Vite dev server at http://localhost:3000
+
+### Production Build
+
+```bash
+npm run build
+```
+
+Creates optimized production bundle in `dist/` directory
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## 🤝 Contributing
+
+1. Create a feature branch (`git checkout -b feature/amazing-feature`)
+2. Commit changes (`git commit -m 'Add amazing feature'`)
+3. Push to branch (`git push origin feature/amazing-feature`)
+4. Open a Pull Request
+
+## 📝 Code Style & Conventions
+
+- **Component Naming**: PascalCase (e.g., `BlogTable.jsx`)
+- **Hook Naming**: camelCase with `use` prefix (e.g., `useBlogs.js`)
+- **Styling**: Styled Components for component-scoped styles
+- **Imports**: Feature-based organization in `src/features/`
+- **Comments**: Use TODO, FIXME, BUG, IMPROVE, LEARN, DONE tags for code notes
+
+## 🐛 Common Issues & Solutions
+
+### Issue: Clerk Authentication Not Working
+
+**Symptoms**: "Clerk not loaded" error or failed login
+
+**Solutions**:
+
+- Verify `VITE_CLERK_PUBLISHABLE_KEY` is correct in `.env`
+- Check Clerk Dashboard for proper configuration
+- Ensure JWT template is created for Supabase integration
+
+### Issue: Database Queries Return Empty
+
+**Symptoms**: No data appears in tables
+
+**Solutions**:
+
+- Check RLS policies are enabled on database tables
+- Verify Clerk JWT token includes required claims
+- Confirm user has proper permissions in Clerk dashboard
+
+### Issue: Image Upload Fails
+
+**Symptoms**: Error when uploading blog images
+
+**Solutions**:
+
+- Check Supabase storage bucket permissions
+- Verify file size is under limits
+- Ensure CORS is configured in Supabase
+
+## 📚 Resources
+
+- [React Documentation](https://react.dev)
+- [Vite Guide](https://vitejs.dev)
+- [Supabase Docs](https://supabase.com/docs)
+- [Clerk Documentation](https://clerk.com/docs)
+- [React Query Docs](https://tanstack.com/query/latest)
+- [Styled Components](https://styled-components.com)
+
+## � Acknowledgments
+
+This project was developed while following **[The Ultimate React Course 2025: React, Next.js, Redux & More](https://www.udemy.com/course/the-ultimate-react-course/)** by **Jonas Schmedtmann**.
+
+Special thanks to Jonas for creating such a comprehensive and high-quality course that covers advanced React concepts, best practices, and modern development patterns. His teaching approach and practical examples have been instrumental in understanding complex React patterns like:
+
+- Custom hooks and React patterns
+- State management with React Query
+- Authentication flows and JWT integration
+- Building scalable component architectures
+- Performance optimization techniques
+
+His course provided the foundation and knowledge that made this project possible.
+
+## �📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👤 Author
+
+**Damián Ruiz** - [GitHub](https://github.com/damianroiz)
+
+---
+
+**Last Updated**: January 2026
+
+For questions or support, please reach out to the development team or open an issue on GitHub.

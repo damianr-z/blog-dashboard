@@ -13,9 +13,15 @@ export function useUpdateUser() {
   const supabase = useSupabase();
 
   const { mutate: updateUser, isLoading: isUpdating } = useMutation({
-    mutationFn: async ({ firstName, lastName, avatar, password }) => {
-      if (password) {
-        await clerkUser.updatePassword({ newPassword: password });
+    mutationFn: async ({
+      firstName,
+      lastName,
+      avatar,
+      currentPassword,
+      newPassword,
+    }) => {
+      if (currentPassword && newPassword) {
+        await clerkUser.updatePassword({ currentPassword, newPassword });
         return clerkUser;
       }
 
@@ -48,7 +54,7 @@ export function useUpdateUser() {
           data: old.data.map((blog) =>
             blog.author?.user_id === clerkUser.id
               ? { ...blog, author: { ...blog.author, name: newName } }
-              : blog
+              : blog,
           ),
         };
       });
