@@ -34,19 +34,8 @@
   --ease: cubic-bezier(0.865, 0.14, 0.095, 0.87);
 
   /* COLOUR PALETTE */
-  --c-background: linear-gradient(
-    47deg,
-    rgb(0, 26, 255),
-    rgb(113, 196, 255) 100%
-  );
-  --image-gradient: linear-gradient(
-    217deg,
-    rgba(2, 2, 2, 0.5),
-    rgba(0, 0, 255, 0.7)
-  );
-
   &,
-  &.dark-mode {
+  &.light-mode {
     /* BRAND COLOURS */
     --c-blue-50: #e3f0ff;
     --c-blue-100: #c6e0ff;
@@ -140,7 +129,7 @@
     --border-radius-lg: 9px;
   }
 
-  &.white-mode {
+  &.dark-mode {
     --image-grayscale: 0;
     --image-opacity: 100%;
     filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));

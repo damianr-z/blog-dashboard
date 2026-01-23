@@ -4,12 +4,12 @@ const TextArea = styled.textarea`
   padding: 0.8rem 1.2rem;
   border: 1px solid var(--c-grey-500);
   border-radius: var(--border-radius-sm);
-  background-color: var(--c-grey-100);
+  background-color: var(--c-white-600);
   box-shadow: var(--shadow-sm);
   width: 100%;
   height: 28rem;
   overflow: scroll;
-  color: var(--c-white-200);
+  color: var(--c-black-200);
 `;
 
 export default TextArea;
