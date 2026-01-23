@@ -34,7 +34,6 @@
   --ease: cubic-bezier(0.865, 0.14, 0.095, 0.87);
 
   /* COLOUR PALETTE */
-  &,
   &.light-mode {
     /* BRAND COLOURS */
     --c-blue-50: #e3f0ff;
@@ -129,6 +128,7 @@
     --border-radius-lg: 9px;
   }
 
+  &, /*The default with be the dark mode*/
   &.dark-mode {
     --image-grayscale: 0;
     --image-opacity: 100%;

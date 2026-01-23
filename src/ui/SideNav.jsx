@@ -6,6 +6,7 @@ import {
   HiFolderOpen,
   HiOutlineUsers,
 } from 'react-icons/hi2';
+import { HiPencilSquare } from 'react-icons/hi2';
 
 const NavList = styled.ul`
   display: flex;
@@ -64,9 +65,15 @@ function SideNav() {
     <nav>
       <NavList>
         <li>
-          <StyledNavLink to="/" end>
+          <StyledNavLink to="/dashboard" end>
             <HiOutlineHome />
             <span>Home</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/new_blog">
+            <HiPencilSquare />
+            <span>New Blog</span>
           </StyledNavLink>
         </li>
         <li>

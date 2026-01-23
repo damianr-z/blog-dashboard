@@ -4,8 +4,9 @@ import { HiOutlineUser } from 'react-icons/hi2';
 import { HiArrowRightOnRectangle } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import SpinnerMini from './SpinnerMini';
-import Button from './Button';
+import Button from './Button'
 import Row from './Row';
+import DarkModeToggle from './DarkModeToggle';
 import UserAvatar from '../features/authentication/UserAvatar';
 
 const StyledHeaderMenu = styled.ul`
@@ -42,9 +43,9 @@ function HeaderMenu() {
           <UserAvatar />
         </Row>
       </li>
-      {/* <li>
-        <DarkModeToggle />
-      </li> */}
+      <li>
+          <DarkModeToggle />     
+      </li>
       <li>
         {!isLoading ? (
           <Button variation={'naked'} size={'large'} onClick={handleLogOut}>
