@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import  useRecentBlogs  from './useRecentBlogs';
+import useRecentBlogs from './useRecentBlogs';
 import Spinner from '../../ui/Spinner';
+import Stats from './Stats';
 
 // import Stats from './Stats';
 // import { useBlogs } from '../blogs/useBlogs';
@@ -10,6 +11,7 @@ const StyledDashboardLayout = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto 34rem auto;
   gap: 2.4rem;
+  margin-top: 3rem;
 `;
 
 function DashboardLayout() {
@@ -20,9 +22,10 @@ function DashboardLayout() {
 
   return (
     <StyledDashboardLayout>
-      <div>Statistics</div>
+      <Stats blogs={blogs} />
+      {/* <div>Statistics</div>
       <div>Today's activity</div>
-      <div>Most recent blogs</div>
+      <div>Most recent blogs</div> */}
     </StyledDashboardLayout>
   );
 }
