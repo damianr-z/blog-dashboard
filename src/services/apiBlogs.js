@@ -1,6 +1,8 @@
-import { supabaseUrl } from './supabase';
+import supabase, { supabaseUrl } from './supabase';
 import { PAGE_SIZE } from '../utils/constants';
 import { DEFAULT_IMAGE_URL } from '../utils/constants';
+import supabaseClient from './supabase';
+import { getToday } from '../utils/helpers';
 
 //////////////////// Get all blogs ////////////////////////
 
@@ -74,7 +76,7 @@ export async function createEditBlog(supabaseClient, newBlog, id, clerkUser) {
         name: `${clerkUser.firstName} ${clerkUser.lastName}`.trim(),
         email: clerkUser.primaryEmailAddress?.emailAddress,
       },
-      { onConflict: 'user_id' }
+      { onConflict: 'user_id' },
     );
 
     if (authorError) throw new Error(authorError.message);
@@ -110,8 +112,6 @@ export async function createEditBlog(supabaseClient, newBlog, id, clerkUser) {
     imagePath = DEFAULT_IMAGE_URL;
   }
 
-  console.log('🔍 Image handling:', { hasImagePath, imageName, imagePath });
-
   // ✅ Get author ID by searching for author by name
   let originalAuthorId = null;
 
@@ -143,8 +143,6 @@ export async function createEditBlog(supabaseClient, newBlog, id, clerkUser) {
     status: newBlog.status?.toLowerCase() || 'draft',
   };
 
-  console.log('🔍 Blog data to insert:', blogDataToInsert);
-
   // Create / edit blog
   let query = supabaseClient.from('blogs');
 
@@ -171,7 +169,6 @@ export async function createEditBlog(supabaseClient, newBlog, id, clerkUser) {
     console.log(storageError);
     throw new Error('image could not be uploaded');
   }
-  console.log('✅ Blog and image created successfully');
   return data;
 }
 
@@ -226,4 +223,21 @@ export async function deleteBlog(supabaseClient, id, clerkUser) {
   }
 
   return { data };
+}
+
+//// API for Dashboard
+/// Return all blogs that were created after a given date. Could it be a month or shorter time. Useful to get the access to the latest blogs I am going to be writing on.
+
+export async function getBlogsAfterDate(supabaseClient, date) {
+  const { data, error } = await supabaseClient
+    .from('blogs')
+    .select('*, author(id, name)')
+    .gte('created_at', date)
+    .lte('created_at', getToday({ end: true }));
+
+  if (error) {
+    console.log(error);
+    throw new Error('Blog could not be loaded');
+  }
+  return data;
 }
