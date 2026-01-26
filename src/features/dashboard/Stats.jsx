@@ -1,9 +1,7 @@
-import {
-  HiOutlineBanknotes,
-  HiOutlineBriefcase,
-  HiOutlineCalendarDays,
-  HiOutlineChartBar,
-} from 'react-icons/hi2';
+import { RiDraftLine } from 'react-icons/ri';
+import { IoLibraryOutline, IoBriefcaseOutline } from 'react-icons/io5';
+import { FaRegCalendarCheck } from 'react-icons/fa';
+
 import Stat from './Stat';
 
 function Stats({ blogs, numDays }) {
@@ -22,25 +20,25 @@ function Stats({ blogs, numDays }) {
       <Stat
         title="Total Blogs"
         color="blue"
-        icon={<HiOutlineBriefcase />}
+        icon={<IoLibraryOutline />}
         value={totalBlogs}
       />
       <Stat
         title="Published Blogs"
         color="green"
-        icon={<HiOutlineBriefcase />}
+        icon={<FaRegCalendarCheck />}
         value={publishedBlogs}
       />
       <Stat
         title="Blog Drafts"
         color="yellow"
-        icon={<HiOutlineBriefcase />}
+        icon={<RiDraftLine />}
         value={draftedBlogs}
       />
       <Stat
         title="Archived Blogs"
         color="red"
-        icon={<HiOutlineBriefcase />}
+        icon={<IoBriefcaseOutline />}
         value={archivedBlogs}
       />
     </>
