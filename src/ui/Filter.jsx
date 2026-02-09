@@ -2,8 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 const StyledFilter = styled.div`
-  border: 1px solid var(--c-grey-200);
-  background-color: var(--c-grey-100);
+  background-color: var(--c-grey-300);
   box-shadow: var(--shadow-sm);
   border-radius: var(--border-radius-sm);
   padding: 0.4rem;
@@ -13,7 +12,7 @@ const StyledFilter = styled.div`
 
 const FilterButton = styled.button`
   color: var(--c-white-200);
-  background-color: var(--c-grey-100);
+  background-color: inherit;
   border: none;
   cursor: pointer;
 

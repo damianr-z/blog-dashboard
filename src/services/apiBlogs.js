@@ -116,8 +116,6 @@ export async function createEditBlog(supabaseClient, newBlog, id, clerkUser) {
   let originalAuthorId = null;
 
   if (newBlog.author && newBlog.author.name) {
-    console.log('🔍 Searching for author by name:', newBlog.author.name);
-
     const { data: authorData } = await supabaseClient
       .from('author')
       .select('id')

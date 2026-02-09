@@ -12,7 +12,7 @@ const StyledLayout = styled.div`
 
 const Main = styled.main`
   background-color: var(--c-black-200);
-  padding: 2rem 3rem 6.4rem 2rem;
+  padding: 3.4rem 3rem 6.4rem 2rem;
   grid-row: 2 / -1;
   grid-column: 2 / -1;
 `;

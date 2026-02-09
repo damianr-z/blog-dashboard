@@ -17,8 +17,8 @@ function BlogTableOps() {
 
       <SortBy
         options={[
-          { value: 'created_at-oldest', label: 'Sort by date (oldest first)' },
           { value: 'created_at-newest', label: 'Sort by date (newest first)' },
+          { value: 'created_at-oldest', label: 'Sort by date (oldest first)' },
         ]}
       />
     </TableOps>

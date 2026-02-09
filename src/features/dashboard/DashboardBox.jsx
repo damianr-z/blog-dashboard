@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const DashboardBox = styled.div`
   /* Box */
-  background-color: var(--c-grey-50);
-  border: 1px solid var(--c-grey-100);
+  background-color: var(--c-grey-300);
   border-radius: var(--border-radius-md);
+  box-shadow: 2px 2px 5px 1px rgb(0 0 0 / 0.2);
 
   padding: 3.2rem;
 

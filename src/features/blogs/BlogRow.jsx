@@ -32,7 +32,6 @@ function BlogRow({ blog }) {
   const { isCreating, createBlog } = useCreateBlog();
   const { isOwner, handleDelete } = useConfirmAuthorId({ author: blog.author });
 
-
   const {
     image,
     id: blogId,
@@ -74,10 +73,7 @@ function BlogRow({ blog }) {
             <Menus.List id={blogId}>
               <Menus.ListItem
                 icon={<HiEye />}
-                onClick={() => {
-                  console.log('viewing blog', blogId);
-                  navigate(`/blogs/${blogId}`);
-                }}
+                onClick={() => navigate(`/blogs/${blogId}`)}
               >
                 View
               </Menus.ListItem>

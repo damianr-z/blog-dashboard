@@ -67,19 +67,19 @@ function SideNav() {
         <li>
           <StyledNavLink to="/dashboard" end>
             <HiOutlineHome />
-            <span>Home</span>
+            <span>Dashboard</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/new_blog">
             <HiPencilSquare />
-            <span>New Blog</span>
+            <span>Write</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/blogs">
             <HiFolderOpen />
-            <span>Blogs</span>
+            <span>All Blogs</span>
           </StyledNavLink>
         </li>
         <li>

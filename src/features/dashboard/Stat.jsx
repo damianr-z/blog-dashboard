@@ -1,16 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import {Link} from 'react-router-dom';
+import DashboardBox from './DashboardBox';
 
-const StyledStat = styled.div`
+const StyledStat = styled(DashboardBox)`
   /* Box */
-  background-color: var(--c-grey-0);
-  border: 1px solid var(--c-grey-100);
-  border-radius: var(--border-radius-md);
-
-  padding: 1.6rem;
+  padding: 1rem;
   display: grid;
   grid-template-columns: 6.4rem 1fr;
   grid-template-rows: auto auto;
-  column-gap: 1.6rem;
+  column-gap: 1.2rem;
   row-gap: 0.4rem;
 `;
 
@@ -38,7 +36,7 @@ const Title = styled.h5`
   text-transform: uppercase;
   letter-spacing: 0.4px;
   font-weight: 600;
-  color: var(--c-grey-500);
+  color: var(--c-white-600);
 `;
 
 const Value = styled.p`
@@ -47,11 +45,13 @@ const Value = styled.p`
   font-weight: 500;
 `;
 
-function Stat({ icon, title, value, color }) {
+function Stat({ icon, title, value, color, link }) {
   return (
     <StyledStat>
       <Icon color={color}>{icon}</Icon>
-      <Title>{title}</Title>
+      <Link to={`/blogs?status=${link}`}>
+        <Title>{title}</Title>
+      </Link>
       <Value>{value}</Value>
     </StyledStat>
   );
