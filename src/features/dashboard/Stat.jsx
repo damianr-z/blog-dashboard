@@ -3,13 +3,12 @@ import {Link} from 'react-router-dom';
 import DashboardBox from './DashboardBox';
 
 const StyledStat = styled(DashboardBox)`
-  /* Box */
-  padding: 1rem;
   display: grid;
   grid-template-columns: 6.4rem 1fr;
   grid-template-rows: auto auto;
   column-gap: 1.2rem;
   row-gap: 0.4rem;
+  padding: 1.2rem;
 `;
 
 const Icon = styled.div`

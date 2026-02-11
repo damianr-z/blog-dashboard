@@ -15,18 +15,6 @@ import Modal from '../../ui/Modal';
 import StatusTag from '../../ui/StatusTag';
 import { DEFAULT_IMAGE_URL } from '../../utils/constants';
 
-const Img = styled.img`
-  display: block;
-  margin: 0 1rem;
-  width: 6.4rem;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-  object-position: center;
-  background-color: #374151;
-  fill: green;
-  transform: scale(1.5) translateX(-7px);
-`;
-
 function BlogRow({ blog }) {
   const { isDeleting, deleteBlog } = useDeleteBlog();
   const { isCreating, createBlog } = useCreateBlog();
@@ -57,63 +45,58 @@ function BlogRow({ blog }) {
 
   return (
     <Table.Row>
-      <Img src={image || DEFAULT_IMAGE_URL} />
-      <div>{title}</div>
-      <div>{authorName}</div>
-      <div>{categories}</div>
+      <img src={image || DEFAULT_IMAGE_URL} />
+      <p>{title}</p>
+      <p>{authorName}</p>
+      <p>{categories}</p>
 
       <StatusTag status={status}>{status}</StatusTag>
 
-      <div>{created_at}</div>
+      <p>{created_at}</p>
 
-      <div>
-        <Modal>
-          <Menus.Menu>
-            <Menus.Toggle id={blogId} xPos={60} yPos={-110} />
-            <Menus.List id={blogId}>
-              <Menus.ListItem
-                icon={<HiEye />}
-                onClick={() => navigate(`/blogs/${blogId}`)}
-              >
-                View
-              </Menus.ListItem>
+      <Modal>
+        <Menus.Menu>
+          <Menus.Toggle id={blogId} xPos={60} yPos={-110} />
+          <Menus.List id={blogId}>
+            <Menus.ListItem
+              icon={<HiEye />}
+              onClick={() => navigate(`/blogs/${blogId}`)}
+            >
+              View
+            </Menus.ListItem>
 
-              <Menus.ListItem
-                icon={<HiSquare2Stack />}
-                onClick={handleDuplicate}
-              >
-                Duplicate
-              </Menus.ListItem>
+            <Menus.ListItem icon={<HiSquare2Stack />} onClick={handleDuplicate}>
+              Duplicate
+            </Menus.ListItem>
 
-              <Modal.Open opens="edit">
-                <Menus.ListItem icon={<HiPencil />}>Quick Edit</Menus.ListItem>
+            <Modal.Open opens="edit">
+              <Menus.ListItem icon={<HiPencil />}>Quick Edit</Menus.ListItem>
+            </Modal.Open>
+
+            {isOwner ? (
+              <Modal.Open opens="delete">
+                <Menus.ListItem icon={<HiTrash />}>Delete</Menus.ListItem>
               </Modal.Open>
+            ) : (
+              <Menus.ListItem icon={<HiTrash />} onClick={handleDelete}>
+                Delete
+              </Menus.ListItem>
+            )}
+          </Menus.List>
 
-              {isOwner ? (
-                <Modal.Open opens="delete">
-                  <Menus.ListItem icon={<HiTrash />}>Delete</Menus.ListItem>
-                </Modal.Open>
-              ) : (
-                <Menus.ListItem icon={<HiTrash />} onClick={handleDelete}>
-                  Delete
-                </Menus.ListItem>
-              )}
-            </Menus.List>
+          <Modal.Window name="edit" type="large">
+            <CreateBlogForm blogToEdit={blog} />
+          </Modal.Window>
 
-            <Modal.Window name="edit" type="large">
-              <CreateBlogForm blogToEdit={blog} />
-            </Modal.Window>
-
-            <Modal.Window name="delete">
-              <ConfirmDelete
-                resourceName="blogs"
-                disabled={isDeleting}
-                onConfirm={() => deleteBlog(blogId)}
-              />
-            </Modal.Window>
-          </Menus.Menu>
-        </Modal>
-      </div>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="blogs"
+              disabled={isDeleting}
+              onConfirm={() => deleteBlog(blogId)}
+            />
+          </Modal.Window>
+        </Menus.Menu>
+      </Modal>
     </Table.Row>
   );
 }

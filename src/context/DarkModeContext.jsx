@@ -5,6 +5,7 @@ const DarkModeContext = createContext();
 
 function DarkModeProvider({ children }) {
   const [isDarkMode, setIsDarkMode] = useLocalStorageState(
+    //LEARN This is to use the browser config as a standard for colour mode.
     window.matchMedia('(prefers-color-scheme)').matches,
     'isDarkMode',
   );

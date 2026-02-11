@@ -32,7 +32,7 @@ const Heading = styled.h1`
     `}
     
   line-height: 1.4;
-  margin-top: 2rem;
+  /* margin-top: 1rem; */
 `;
 
 export default Heading;

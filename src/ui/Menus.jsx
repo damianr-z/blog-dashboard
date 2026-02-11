@@ -9,6 +9,7 @@ const Menu = styled.div`
   flex-direction: center;
   justify-content: center;
   position: relative;
+  anchor-name: --profile-button;
 `;
 
 const StyledToggle = styled.button`
@@ -37,27 +38,13 @@ const StyledList = styled.ul`
   border-radius: var(--border-radius-sm);
   right: ${(props) => props.position.x}px;
   top: ${(props) => props.position.y}px;
-  position-achor: --profile-button;
-  position-try-fallbacks: --bottom;
-  transition: display 1s, opacity 1s;
-  transition-behavior: allow-discrete;
-  
-  @starting-style {
-    opacity; 0;
-  }
-  
-  @position-try --bottom {
-    inset: unset;
-    top: anchor(bottom);
-    right: anchor(right);
-    margin: 0;
-    margin-right: 6px;
-  }
-  `;
+  transition: opacity 0.2s;
+  opacity: 1;
+`;
 
 const StyledListItem = styled.li`
   background-color: var(--c-grey-100);
-  `;
+`;
 
 const StyledButton = styled.button`
   width: 100%;
@@ -66,13 +53,12 @@ const StyledButton = styled.button`
   border: none;
   font-size: 12px;
   padding: 0.6rem 1.2rem;
-  transtion: all 0.2s allow-discrete;
+  transition: all 0.2s allow-discrete;
   color: var(--c-white-400);
   display: flex;
   align-items: center;
   gap: 0.8rem;
   cursor: pointer;
-  onchor-name: --profile-button;
 
   &:hover {
     background-color: var(--c-blue-600);
@@ -107,6 +93,7 @@ function Menus({ children }) {
 function Toggle({ id, xPos, yPos }) {
   const { OpenId, close, setPosition, openMenu } = useContext(MenusContext);
   function handleClick(e) {
+    e.stopPropagation(); // to avoid closing the menu instantly
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition({
       x: window.innerWidth - rect.width - (rect.x + xPos || 0),
@@ -125,13 +112,18 @@ function Toggle({ id, xPos, yPos }) {
 
 function List({ id, children }) {
   const { OpenId, close, position } = useContext(MenusContext);
-  const ref = useOutsideClick(close);
+
+  const ref = useOutsideClick(() => {
+    close();
+  }, false);
+
   if (OpenId !== id) return null;
+
   return createPortal(
     <StyledList popovertarget="modal-menu" position={position} ref={ref}>
       {children}
     </StyledList>,
-    document.body
+    document.body,
   );
 }
 

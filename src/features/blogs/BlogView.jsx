@@ -107,63 +107,67 @@ function BlogView() {
         </Row>
       </Row>
       {/* /////////Side Menu////////////// */}
-      <Row type="vertical">
-        <Row flexjustify="flexEnd" type="horizontal">
-          <Button variation="naked" onClick={moveBack}>
-            &larr; Back
-          </Button>
-          <StatusTag status={status}>{status}</StatusTag>
-        </Row>
-        <Row>
-          <Menus>
-            <Modal>
-              <Menus.Menu>
-                <Menus.Toggle xPos={60} yPos={10} />
-                <Menus.List>
-                  {getStatusActions().map((item) => (
-                    <Menus.ListItem
-                      key={item.label}
-                      icon={
-                        item.label === 'Publish' ? (
-                          <IoDocumentTextOutline />
-                        ) : item.label === 'Archive' ? (
-                          <HiArchiveBox />
-                        ) : item.label === 'Draft' ? (
-                          <GrDocumentTransfer />
-                        ) : null
-                      }
-                      onClick={item.action}
-                      disabled={item.disabled}
-                    >
-                      {item.label}
-                    </Menus.ListItem>
-                  ))}
+      {blog ? (
+        <Row type="vertical">
+          <Row flexjustify="flexEnd" type="horizontal">
+            <Button variation="naked" onClick={moveBack}>
+              &larr; Back
+            </Button>
+            <StatusTag status={status}>{status}</StatusTag>
+          </Row>
+          <Row>
+            <Menus>
+              <Modal>
+                <Menus.Menu>
+                  <Menus.Toggle xPos={60} yPos={10} />
+                  <Menus.List>
+                    {getStatusActions().map((item) => (
+                      <Menus.ListItem
+                        key={item.label}
+                        icon={
+                          item.label === 'Publish' ? (
+                            <IoDocumentTextOutline />
+                          ) : item.label === 'Archive' ? (
+                            <HiArchiveBox />
+                          ) : item.label === 'Draft' ? (
+                            <GrDocumentTransfer />
+                          ) : null
+                        }
+                        onClick={item.action}
+                        disabled={item.disabled}
+                      >
+                        {item.label}
+                      </Menus.ListItem>
+                    ))}
 
-                  {isOwner ? (
-                    <Modal.Open opens="delete">
-                      <Menus.ListItem icon={<HiTrash />}>Delete</Menus.ListItem>
-                    </Modal.Open>
-                  ) : (
-                    <Menus.ListItem icon={<HiTrash />} onClick={handleDelete}>
-                      Delete
-                    </Menus.ListItem>
-                  )}
-                </Menus.List>
-              </Menus.Menu>
-              <Modal.Window name="delete">
-                <ConfirmDelete
-                  resourceName="blogs"
-                  disabled={isDeleting}
-                  onConfirm={() => {
-                    deleteBlog(blogId);
-                    navigate(-1);
-                  }}
-                />
-              </Modal.Window>
-            </Modal>
-          </Menus>
+                    {isOwner ? (
+                      <Modal.Open opens="delete">
+                        <Menus.ListItem icon={<HiTrash />}>
+                          Delete
+                        </Menus.ListItem>
+                      </Modal.Open>
+                    ) : (
+                      <Menus.ListItem icon={<HiTrash />} onClick={handleDelete}>
+                        Delete
+                      </Menus.ListItem>
+                    )}
+                  </Menus.List>
+                </Menus.Menu>
+                <Modal.Window name="delete">
+                  <ConfirmDelete
+                    resourceName="blogs"
+                    disabled={isDeleting}
+                    onConfirm={() => {
+                      deleteBlog(blogId);
+                      navigate(-1);
+                    }}
+                  />
+                </Modal.Window>
+              </Modal>
+            </Menus>
+          </Row>
         </Row>
-      </Row>
+      ) : null}
     </Row>
   );
 }

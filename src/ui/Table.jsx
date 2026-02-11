@@ -8,7 +8,7 @@ const StyledTable = styled.div.withConfig({
   color: var(--c-white-100);
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg);
 `;
 
 const CommonRow = styled.div.withConfig({
@@ -20,28 +20,40 @@ const CommonRow = styled.div.withConfig({
   align-items: center;
   transition: none;
   color: var(--c-white-400);
+  padding: 1.8rem 2.4rem;
   &:not(:last-child) {
     border-bottom: 1px solid var(--c-grey-200);
   }
 `;
 
 const StyledHeader = styled(CommonRow)`
-  padding: 1.6rem 2.4rem;
   background-color: var(--c-grey-400);
   border-bottom: 1px solid var(--c-grey-200);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font: var(--fs-24) var(--ff-subheading);
-`;
+  `;
 
 const StyledRow = styled(CommonRow)`
   background-color: var(--c-grey-300);
-  padding: 1.8rem 2.4rem;
-  font: var(--fs-20) var(--ff-text);
   border-bottom: 1px solid var(--c-grey-200);
+  > img {
+    display: block;
+    width: 6.4rem;
+    margin-left: 0.8rem;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.5);
+  }
+  > p {
+    font: var(--fs-18) var(--ff-text);
+  }
 `;
 
-const StyledBody = styled.section``;
+const StyledBody = styled.section`
+  margin: 0;
+`;
 
 const Footer = styled.footer`
   background-color: var(--c-grey-400);
@@ -56,7 +68,6 @@ const Footer = styled.footer`
 `;
 
 const Empty = styled.p`
-  font-size: 1.6rem;
   font-weight: 500;
   text-align: center;
   margin: 2.4rem;

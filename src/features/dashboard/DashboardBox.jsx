@@ -6,7 +6,7 @@ const DashboardBox = styled.div`
   border-radius: var(--border-radius-md);
   box-shadow: 2px 2px 5px 1px rgb(0 0 0 / 0.2);
 
-  padding: 3.2rem;
+  padding: 2.8rem;
 
   display: flex;
   flex-direction: column;

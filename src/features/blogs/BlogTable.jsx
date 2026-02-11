@@ -10,6 +10,13 @@ function BlogTable() {
   const { blogs, isLoading, count } = useBlogs();
 
   if (isLoading) return <Spinner />;
+
+
+  //TEST 
+  // Intentional crash to verify error boundary fallback.
+  // throw new Error('Crash test: BlogTable render');
+
+
   if (!blogs || blogs.length === 0) return <Empty resourceName="blogs" />;
 
   return (
