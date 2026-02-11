@@ -9,7 +9,6 @@ const Menu = styled.div`
   flex-direction: center;
   justify-content: center;
   position: relative;
-  anchor-name: --profile-button;
 `;
 
 const StyledToggle = styled.button`
@@ -17,7 +16,7 @@ const StyledToggle = styled.button`
     border: none;
     padding: 0.4rem;
     border-radius: var(--border-radius-sm);
-    transform; translateX(0-.8rem);
+    transform: translateX(0-.8rem);
     transition: all 0.2s;
     cursor: pointer;
     
